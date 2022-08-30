@@ -1,11 +1,12 @@
 import time
 
-chars = ['|', '/', '-', '\\']
-
-i = 0
+DELAY = 0.1
 while True:
-    print(chars[i % 4], end='', flush=True)
-    time.sleep(0.1)
-    print('\b', end='', flush=True)
-
-    i += 1
+    print('\b|', end='', flush=True)
+    time.sleep(DELAY)
+    print('\b/', end='', flush=True)
+    time.sleep(DELAY)
+    print('\b-', end='', flush=True)
+    time.sleep(DELAY)
+    print('\b\\', end='', flush=True)
+    time.sleep(DELAY)
