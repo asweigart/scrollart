@@ -7,10 +7,11 @@ r"""
 """
 
 DELAY = 0.1
-changeAmt = 4
+
 
 def main():
     density = 0
+    changeAmt = 4
     while True:
         # -1 because Windows adds newlines if anything
         # is printed in the rightmost column.
