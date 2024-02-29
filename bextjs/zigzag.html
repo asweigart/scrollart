@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Zigzag Scroll Art</title>
+</head>
+<body>
+
+<textarea id="bextOutput" readonly></textarea><br />
+<!--<input id="bextInput" readonly />-->
+<button type="button" onclick="running = !running;">&#x23FB; Off</button>
+
+
+<script src="bext.js"></script>
+<link rel="stylesheet" href="bext.css">
+
+
+<script>
+
+bextRowBuffer = 256;  // Change this to whatever size you want, or -1 for infinite buffer.
+const DELAY = 60;
+
+let width = 80;
+let line = '';
+
+let ZIG_NUM_CHARS = 8;
+let ZIG_CHAR = '*';
+
+let running = true;
+let indentSize = 0;
+
+async function main() {
+    while (running) {
+        //width = 80; // TODO add a getWidth() kind of function to bextjs
+
+        for (let i = 0; i < width - ZIG_NUM_CHARS; i++) {
+            print(' '.repeat(indentSize), ZIG_CHAR.repeat(ZIG_NUM_CHARS));
+            indentSize += 1;
+            await sleep(DELAY);
+            if (!running) break;
+        }
+
+        for (let i = 0; i < width - ZIG_NUM_CHARS; i++) {
+            print(' '.repeat(indentSize), ZIG_CHAR.repeat(ZIG_NUM_CHARS));
+            indentSize -= 1;
+            await sleep(DELAY);
+            if (!running) break;
+        }
+    }
+}
+
+main();
+</script>
+
+</body>
+</html>
