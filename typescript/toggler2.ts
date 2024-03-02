@@ -17,12 +17,6 @@ namespace Toggler2 {
         process.exit();
     });
 
-    /*function updateWidth(): void {
-        if (process.stdout.isTTY) {
-            width = process.stdout.columns - 1; // -1 is because Windows puts a newline when printing to the last column
-        }
-    }*/
-
     interface Toggler {
         position: number,
         movement: number

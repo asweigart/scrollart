@@ -19,10 +19,18 @@ namespace Starfield {
         process.exit();
     });
 
+    function getTerminalWidth(): number {
+        if (process.stdout.isTTY) {
+            return process.stdout.columns - 1; // -1 is because Windows puts a newline when printing to the last column
+        } else {
+            return 80;
+        }
+    }
+
     async function main(): Promise<void> {
         while (true) {
             if (process.stdout.isTTY) {
-                width = process.stdout.columns - 1; // -1 is because Windows puts a newline when printing to the last column
+                width = getTerminalWidth();
             }
 
             if (density < 0 || density > 1) {

@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Toggler 2 Scroll Art</title>
+</head>
+<body>
+
+<textarea id="bextOutput" readonly></textarea><br />
+<!--<input id="bextInput" readonly />-->
+<button type="button" onclick="running = !running;">&#x23FB; Off</button>
+
+
+<script src="bext.js"></script>
+<link rel="stylesheet" href="bext.css">
+
+
+<script>
+
+bextRowBuffer = 256;  // Change this to whatever size you want, or -1 for infinite buffer.
+let width = 220;
+let running = true;
+const DELAY = 50;
+const TRUE_CHAR = '@';
+const FALSE_CHAR = '.';
+const TOGGLER_DENSITY = 0.10;
+const MOVEMENTS = [1, 2, 3];
+
+async function main() {
+    let columnChars = Array.from({length: width}, () => false);
+    let togglers = [];
+
+    while (running) {
+        if (Math.random() < TOGGLER_DENSITY) {
+                let pos = Math.floor(Math.random() * width);
+                let mov = MOVEMENTS[Math.floor(Math.random() * MOVEMENTS.length)];
+                // Create the right-moving toggler:
+                togglers.push({
+                    position: pos, 
+                    movement: mov
+                });
+                // Create the left-moving toggler:
+                togglers.push({
+                    position: pos, 
+                    movement: -mov
+                });
+                // Toggler the starting column since the two togglers will cancel each other out:
+                columnChars[pos] = !columnChars[pos];
+            }
+
+
+        // Remove out of bounds togglers:
+        togglers = togglers.filter(toggler => toggler.position > 0 && toggler.position < width);
+
+        // Move the togglers and toggle the column chars:
+        for (let toggler of togglers) {
+            // Toggle the column:
+            columnChars[toggler.position] = !columnChars[toggler.position];
+
+            // Move the toggler:
+            toggler.position += toggler.movement;
+        }
+
+        // Print the columns:
+        let line = '';
+        for (let columnChar of columnChars) {
+            if (columnChar) {
+                line += TRUE_CHAR;
+            } else {
+                line += FALSE_CHAR;
+            }
+        }
+        print(line);
+        await sleep(DELAY);
+    }
+}
+
+main();
+</script>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Zigzag Scroll Art</title>
+    <title>Spike Scroll Art</title>
 </head>
 <body>
 
@@ -17,31 +17,22 @@
 <script>
 
 bextRowBuffer = 256;  // Change this to whatever size you want, or -1 for infinite buffer.
-const DELAY = 60;
-
+const DELAY = 100;
 let width = 120;
-let line = '';
-
-let ZIG_NUM_CHARS = 8;
-let ZIG_CHAR = '*';
-
 let running = true;
-let indentSize = 0;
 
 async function main() {
     while (running) {
         //width = 80; // TODO add a getWidth() kind of function to bextjs
 
-        for (let i = 0; i < width - ZIG_NUM_CHARS; i++) {
-            print(' '.repeat(indentSize), ZIG_CHAR.repeat(ZIG_NUM_CHARS));
-            indentSize += 1;
+        for (let i = 1; i * i < width; i++) {
+            print('-'.repeat(i * i));
             await sleep(DELAY);
             if (!running) break;
         }
 
-        for (let i = 0; i < width - ZIG_NUM_CHARS; i++) {
-            print(' '.repeat(indentSize), ZIG_CHAR.repeat(ZIG_NUM_CHARS));
-            indentSize -= 1;
+        for (let i = Math.floor(Math.sqrt(width)) - 1; i > 1; i--) {
+            print('-'.repeat(i * i));
             await sleep(DELAY);
             if (!running) break;
         }
