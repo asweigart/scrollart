@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Tri Grid Scaffolding Scroll Art</title>
+</head>
+<body>
+
+<textarea id="bextOutput" readonly></textarea><br />
+<!--<input id="bextInput" readonly />-->
+<button type="button" onclick="running = !running;">&#x23FB; Off</button>
+
+
+<script src="bext.js"></script>
+<link rel="stylesheet" href="bext.css">
+
+
+<script>
+
+bextRowBuffer = 256;  // Change this to whatever size you want, or -1 for infinite buffer.
+let width = 220
+const DELAY = 60;
+let CHANGE_AMOUNT = 0.04;
+
+let running = true;
+let indentSize = 0;
+
+async function main() {
+    let density = 0.0;
+    while (running) {
+        let triangleWidth = Math.floor((width - 2) / 4);
+        let row1 = '';
+        let row2 = '';
+
+        density += CHANGE_AMOUNT;
+        if (density < 0.0 || density >= 1.0) {
+            CHANGE_AMOUNT *= -1;
+        }
+    
+        for (let j = 0; j < 2; j++) {
+            if (j === 0) {
+                // On j == 0, handle the two rows of begins-with-rightside-up-triangles:
+                //  /\  /\  /\
+                // /__\/__\/__\
+                row1 = '';
+                row2 = '';
+            } else if (j == 1) {
+                // On j == 1, handle the two rows of begins-with-upside-down-triangles:
+                // \  /\  /
+                // _\/__\/_
+                row1 = '\\ ';
+                row2 = '_\\';
+            }
+            
+            for (let i = 0; i < triangleWidth; i++) {
+                if (Math.random() < density) {
+                    row1 += ' /';
+                    row2 += '/';
+                } else {
+                    row1 += '  ';
+                    row2 += ' ';
+                }
+
+                if (Math.random() < density) {
+                    row2 += '__';
+                } else {
+                    row2 += '  ';
+                }
+
+                if (Math.random() < density) {
+                    row1 += '\\ ';
+                    row2 += '\\';
+                } else {
+                    row1 += '  ';
+                    row2 += ' ';
+                }
+            }
+
+            print(row1);
+            await sleep(DELAY);
+            print(row2);
+            await sleep(DELAY);
+        }
+    }
+}
+
+main();
+</script>
+
+</body>
+</html>
