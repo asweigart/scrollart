@@ -1,0 +1,43 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Diagonal Maze Scroll Art</title>
+</head>
+<body>
+
+<textarea id="bextOutput" readonly></textarea><br />
+<!--<input id="bextInput" readonly />-->
+<button type="button" onclick="running = !running;">&#x23FB; Off</button>
+
+
+<script src="bext.js"></script>
+<link rel="stylesheet" href="bext.css">
+
+
+<script>
+
+bextRowBuffer = 256;  // Change this to whatever size you want, or -1 for infinite buffer.
+const DELAY = 150;
+let width = 220;
+let running = true;
+
+async function main() {
+    while (running) {
+        let line = '';
+        for (let i = 0; i < width; i++) {
+            if (Math.random() < 0.5) {
+                line += String.fromCharCode(9585);
+            } else {
+                line += String.fromCharCode(9586);
+            }
+        }
+        print(line);
+        await sleep(DELAY);
+    }
+}
+
+main();
+</script>
+
+</body>
+</html>
