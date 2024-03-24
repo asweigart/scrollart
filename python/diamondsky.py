@@ -2,6 +2,8 @@
 
 import random, os, shutil, time
 
+os.system('cls | clear')  # Clear the screen
+
 # Constants for settings:
 DELAY = 0.1  # Pause after each row in seconds.
 WIDTH = shutil.get_terminal_size()[0] - 1  # Number of columns in output.
@@ -12,7 +14,7 @@ CHANCE_FOR_FILLED_DIAMOND = 0.3  # Set between 0.0 and 1.0
 
 NUM_DIAMONDS_PER_ROW = 2
 
-EMPTY = '.'
+EMPTY = '                ...,'  # The characters in this string are used to fill outside the squares.
 
 def get_outline_diamond(size):
     assert size > 0
@@ -66,9 +68,8 @@ try:
             x_start = random.randint(0, WIDTH - 1 - (size * 2))
 
             # Make sure there are enough rows in `next_rows`:
-            if len(next_rows) < size * 2:
-                for k in range(((size * 2) - len(next_rows))):
-                    next_rows.append([EMPTY] * WIDTH)
+            while len(next_rows) < size * 2:
+                next_rows.append([random.choice(EMPTY) for i in range(WIDTH)])
 
             # Add the diamond to `next_rows`
             for y, row in enumerate(diamond):

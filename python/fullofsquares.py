@@ -1,6 +1,6 @@
-# Code adapted from my diamonds.py program here: https://inventwithpython.com/bigbookpython/project16.html
-
 import random, os, shutil, time
+
+os.system('cls | clear')  # Clear the screen
 
 
 """
@@ -52,9 +52,11 @@ DOWN_LEFT_RIGHT_CHAR = chr(9516)  # Character 9516 is '┬'
 UP_LEFT_RIGHT_CHAR   = chr(9524)  # Character 9524 is '┴'
 CROSS_CHAR           = chr(9532)  # Character 9532 is '┼'
 
+ 
+EMPTY = ' ' * 25 + '...,' + chr(9633)  # The characters in this string are used to fill outside the squares.
+SQUARE_INTERIOR = ' '  # The characters in this string are used to fill the square interiors.
+#SQUARE_INTERIOR = '1234567890ABCDEF'  # Uncomment this for a hackery-data look.
 
-EMPTY = '.'
-SQUARE_INTERIOR = ' '
 
 def get_outline_square(size):
     assert size >= 0
@@ -65,7 +67,7 @@ def get_outline_square(size):
 
     # Make the middle segment of the square:
     for i in range(size):
-        rows.append(UP_DOWN_CHAR + (SQUARE_INTERIOR * (size * 2)) + UP_DOWN_CHAR)
+        rows.append(UP_DOWN_CHAR + (''.join([random.choice(SQUARE_INTERIOR) for i in range((size * 2))])) + UP_DOWN_CHAR)
 
     # Make the bottom row of the square:
     rows.append(UP_RIGHT_CHAR + (LEFT_RIGHT_CHAR * (size * 2)) + UP_LEFT_CHAR)
@@ -118,9 +120,9 @@ try:
             x_start = random.randint(0, WIDTH - 1 - (size * 2 + 2))
 
             # Make sure there are enough rows in `next_rows`:
-            if len(next_rows) < size * 2 + 2:
-                for k in range(((size * 2 + 2) - len(next_rows))):
-                    next_rows.append([EMPTY] * WIDTH)
+            if len(next_rows) < size + 2:
+                for k in range(((size + 2) - len(next_rows))):
+                    next_rows.append([random.choice(EMPTY) for i in range(WIDTH)])
 
             # Add the square to `next_rows`
             for y, row in enumerate(square):

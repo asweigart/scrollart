@@ -26,7 +26,7 @@ EMPTY = ' '
 # The previous printed row; initialize to up-left-right characters:
 prev_row = [UP_LEFT_RIGHT_CHAR] * WIDTH
 
-random.seed(3)
+
 try:
     while True:  # Main loop
         row = []  # Character strings to print in this row.
