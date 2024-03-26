@@ -1,70 +1,83 @@
-"""Wallpaper, by Al Sweigart al@inventwithpython.com"""
+import time
 
-import os, time, random
+WALLPAPER = 'angles'
 
-PAUSE_AMOUNT = 0.05
+DELAY = 0.4
+WIDTH = 80
 
-print('Wallpaper, by Al Sweigart al@inventwithpython.com')
-print('Ctrl-C to quit.')
-time.sleep(2)
+WALLPAPER_PATTERNS = {  # Change as desired; All rows must be the same length.
+    'shining carpet': [
+        r'_ \ \ \_/ __',
+        r' \ \ \___/ _',
+        r'\ \ \_____/ ',
+        r'/ / / ___ \_',
+        r'_/ / / _ \__',
+        r'__/ / / \___',
+    ],
+    'little hex': [
+        r'/ \_',
+        r'\_/ ',
+    ],
+    'big hex': [
+        r' /   \    ',
+        r'/     \___',
+        r'\     /   ',
+        r' \___/    ',
+    ],
+    'hex in hex': [
+        r' / __ \ \__/',
+        r'/ /  \ \____',
+        r'\ \__/ / __ ',
+        ' \\____/ /  \\',
+    ],
+    'bricks': [
+        '___|',
+        '_|__',
+    ],
+    'vines': [
+        '((   )',
+        ' )) ( ',
+    ],
+    'clover': [
+        r'\__   ',
+        r'/  \__',
+        r'\     ',
+        r'/   __',
+        r'\__/  ',
+        r'/     ',
+    ],
+    'skull': [
+        r'/ ___ \ ^ ',
+        r' /   \ VVV',
+        r'|() ()|   ',
+        r' \ ^ / ___',
+        r'\ VVV /   ',
+        r')|   |() (',
+    ],
+    'leaves': [
+        r'  /\  ',
+        r'_/  \_',
+        r'\    /',
+        r' \__/ ',
+    ],
+    'angles': [
+        '\\/',
+        '/ ',
+        '\\ ',
+        '/\\',
+        ' /',
+        ' \\',
+    ],
+}
 
-bigHex = []
-bigHex.append(r' /   \    ')
-bigHex.append(r'/     \___')
-bigHex.append(r'\     /   ')
-bigHex.append(r' \___/    ')
 
-innerHex = []
-innerHex.append(r' / __ \ \__/')
-innerHex.append(r'/ /  \ \____')
-innerHex.append(r'\ \__/ / __ ')
-innerHex.append(' \\____/ /  \\')  # Python can't have raw strings that end with a backslash (weird bug)
 
-tri = []
-tri.append(r'\__   ')
-tri.append(r'/  \__')
-tri.append(r'\     ')
-tri.append(r'/   __')
-tri.append(r'\__/  ')
-tri.append(r'/     ')
+wallpaper_rows = WALLPAPER_PATTERNS[WALLPAPER]
+x_repeat = WIDTH // len(wallpaper_rows[0])
 
-skull = []
-skull.append(r'/ ___ \ ^ ')
-skull.append(r' /   \ VVV')
-skull.append(r'|() ()|   ')
-skull.append(r' \ ^ / ___')
-skull.append(r'\ VVV /   ')
-skull.append(r')|   |() (')
-
-patterns = [bigHex, innerHex, tri, skull
-]
-
-i = 0
-patternNum = 3
 while True:
-    #if random.randint(1, 1000) == 1:
-    #    patternNum = random.randint(0, len(patterns) - 1)
-
-
-    width = os.get_terminal_size()[0]
-
-    currentPattern = patterns[patternNum]
-    currentLine = currentPattern[i % len(currentPattern)]
-    x = 0
-    while x < width - 1:
-        print(currentLine[x % len(currentLine)], end='')
-        x += 1
-    i += 1
-    print(flush=True)
-    time.sleep(PAUSE_AMOUNT)
-
-
-
-
-
-r"""
-
-
-
-
-"""
+    # Display each row in wallpaper_rows:
+    for row in wallpaper_rows:
+        print(row * x_repeat)
+        time.sleep(DELAY)
+    
