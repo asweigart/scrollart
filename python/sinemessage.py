@@ -1,5 +1,7 @@
 import math, time, os, sys
 
+os.system('cls | clear')  # Clear the screen
+
 width = os.get_terminal_size()[0] - 1
 DELAY = 0.1
 STEP_INCREASE = 0.2
@@ -23,4 +25,4 @@ def main():
 try:
     main()
 except KeyboardInterrupt:
-    print('Sine Message, by Al Sweigart al@inventwithpython.com')
+    print('Sine Message, by Al Sweigart al@inventwithpython.com 2021')

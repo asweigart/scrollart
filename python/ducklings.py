@@ -40,9 +40,9 @@ WIDTH -= 1
 
 
 def main():
-    print('Duckling Screensaver, by Al Sweigart')
-    print('Press Ctrl-C to quit...')
-    time.sleep(2)
+    #print('Duckling Screensaver, by Al Sweigart')
+    #print('Press Ctrl-C to quit...')
+    #time.sleep(2)
 
     ducklingLanes = [None] * (WIDTH // DUCKLING_WIDTH)
 
@@ -207,4 +207,5 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
+        print('Ducklings, by Al Sweigart al@inventwithpython.com 2021')
         sys.exit()  # When Ctrl-C is pressed, end the program.

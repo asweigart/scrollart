@@ -23,4 +23,4 @@ def main():
 try:
     main()
 except KeyboardInterrupt:
-    print('Starfield, by Al Sweigart al@inventwithpython.com')
+    print('Starfield, by Al Sweigart al@inventwithpython.com 2022')

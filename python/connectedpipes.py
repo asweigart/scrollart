@@ -124,4 +124,4 @@ try:
 
 
 except KeyboardInterrupt:
-    print('Connected Pipes, by Al Sweigart al@inventwithpython.com')
+    print('Connected Pipes, by Al Sweigart al@inventwithpython.com 2024')

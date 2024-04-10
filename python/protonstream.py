@@ -61,4 +61,4 @@ try:
         time.sleep(DELAY)
 
 except KeyboardInterrupt:
-    print('Proton Stream, by Al Sweigart al@inventwithpython.com')
+    print('Proton Stream, by Al Sweigart al@inventwithpython.com 2024')

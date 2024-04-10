@@ -1,5 +1,7 @@
 import random, time, os
 
+os.system('cls | clear')  # Clear the screen
+
 DELAY = 0.1
 
 FORWARD_SLASH = chr(9585)
@@ -19,4 +21,4 @@ def main():
 try:
     main()
 except KeyboardInterrupt:
-    print('Diagonal Maze in Python, by Al Sweigart al@inventwithpython.com')
+    print('Diagonal Maze in Python, by Al Sweigart al@inventwithpython.com 2024')

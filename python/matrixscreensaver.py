@@ -1,4 +1,6 @@
-import random, time
+import random, time, os
+
+os.system('cls | clear')  # Clear the screen
 
 # Set up the constants:
 MIN_STREAM_LENGTH = 6  # (!) Try changing this to 1 or 50.
@@ -10,26 +12,29 @@ STREAM_CHARS = ['0', '1']  # (!) Try changing this to other characters.
 DENSITY = 0.02  # (!) Try changing this to 0.10 or 0.30.
 
 
-WIDTH = 70
+WIDTH = 79  #os.get_terminal_size()[0] - 1
 
 # For each column, when the counter is 0, no stream is shown.
 # Otherwise, it acts as a counter for how many times a 1 or 0
 # should be displayed in that column.
 columns = [0] * WIDTH
-while True:
-    # Set up the counter for each column:
-    for i in range(WIDTH):
-        if columns[i] == 0:
-            if random.random() <= DENSITY:
-                # Restart a stream on this column.
-                columns[i] = random.randint(MIN_STREAM_LENGTH,
-                                            MAX_STREAM_LENGTH)
+try:
+    while True:
+        # Set up the counter for each column:
+        for i in range(WIDTH):
+            if columns[i] == 0:
+                if random.random() <= DENSITY:
+                    # Restart a stream on this column.
+                    columns[i] = random.randint(MIN_STREAM_LENGTH,
+                                                MAX_STREAM_LENGTH)
 
-        # Display an empty space or a 1/0 character.
-        if columns[i] > 0:
-            print(random.choice(STREAM_CHARS), end='')
-            columns[i] -= 1
-        else:
-            print(' ', end='')
-    print()  # Print a newline at the end of the row of columns.
-    time.sleep(DELAY)
+            # Display an empty space or a 1/0 character.
+            if columns[i] > 0:
+                print(random.choice(STREAM_CHARS), end='')
+                columns[i] -= 1
+            else:
+                print(' ', end='')
+        print()  # Print a newline at the end of the row of columns.
+        time.sleep(DELAY)
+except KeyboardInterrupt:
+    print('Matrix Screensaver, by Al Sweigart al@inventwithpython.com 2021')

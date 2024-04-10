@@ -103,7 +103,7 @@ For now, we'll just leave side 2 always unshaded, because it's tricky to correct
   \_____\/_____/SID2\
 """
 
-
+os.system('cls | clear')  # Clear the screen
 DELAY = 0.1
 
 def main():
@@ -183,4 +183,4 @@ def main():
 try:
     main()
 except KeyboardInterrupt:
-    print('Cube Wall, by Al Sweigart al@inventwithpython.com')
+    print('Cube Wall, by Al Sweigart al@inventwithpython.com 2022')

@@ -135,7 +135,7 @@ try:
         time.sleep(DELAY)
 
 except KeyboardInterrupt:
-    print('Diamond Sky, by Al Sweigart al@inventwithpython.com')
+    print('Diamond Sky, by Al Sweigart al@inventwithpython.com 2024')
 
 
 
