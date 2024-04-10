@@ -1,0 +1,59 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Matrix Screensaver Scroll Art</title>
+</head>
+<body>
+
+<textarea id="bextOutput" readonly></textarea><br />
+<!--<input id="bextInput" readonly />-->
+<button type="button" onclick="running = !running;">&#x23FB; Off</button>
+
+
+<script src="bext.js"></script>
+<link rel="stylesheet" href="bext.css">
+
+
+<script>
+
+bextRowBuffer = 256;  // Change this to whatever size you want, or -1 for infinite buffer.
+
+let running = true;
+let width = 220;
+const DELAY = 100;
+const DENSITY = 0.02;
+const MIN_STREAM_LENGTH = 6;
+const MAX_STREAM_LENGTH = 14;
+const STREAM_CHARS = ['0', '1'];
+
+async function main() {
+    let columns = Array.from({length: width}, () => 0);
+
+    while (running) {
+        let line = '';
+        for (let i = 0; i < width; i++) {
+            if (columns[i] === 0) {
+                if (Math.random() < DENSITY) {
+                    // Restart the stream in this column:
+                    columns[i] = Math.floor(Math.random() * (MAX_STREAM_LENGTH - MIN_STREAM_LENGTH)) + MIN_STREAM_LENGTH;
+                }
+            }
+            if (columns[i] > 0) {
+                // Add a random stream character for this column:
+                line += STREAM_CHARS[Math.floor(Math.random() * STREAM_CHARS.length)];
+                columns[i] -= 1;
+            } else {
+                // Add empty space for this column:
+                line += ' ';
+            }
+        }
+        print(line);
+        await sleep(DELAY);
+    }
+}
+
+main();
+</script>
+
+</body>
+</html>

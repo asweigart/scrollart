@@ -1,0 +1,17 @@
+html, body {
+    height: 100%;
+}
+
+#bextInput, #bextOutput {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: monospace;
+    width: 100%;
+}
+
+#bextOutput {
+    height: calc(100vh - 40px);
+    vertical-align:top;
+    white-space: pre;
+}

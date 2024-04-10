@@ -1,0 +1,57 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Starfield Scroll Art</title>
+</head>
+<body>
+
+<textarea id="bextOutput" readonly></textarea><br />
+<!--<input id="bextInput" readonly />-->
+<button type="button" onclick="running = !running;">&#x23FB; Off</button>
+
+
+<script src="bext.js"></script>
+<link rel="stylesheet" href="bext.css">
+
+
+<script>
+
+bextRowBuffer = 256;  // Change this to whatever size you want, or -1 for infinite buffer.
+const DELAY = 60;
+const STAR_CHAR = '*';
+const EMPTY_CHAR = ' ';
+
+let change_amount = 0.005;
+let density = 0.0;
+let width = 220;
+let line = '';
+
+let running = true;
+
+async function main() {
+    while (running) {
+        //width = 80; // TODO add a getWidth() kind of function to bextjs
+
+        if (density < 0 || density > 1) {
+            change_amount *= -1;
+        }
+        density += change_amount;
+
+        line = '';
+        for (let i = 0; i < width; i++) {
+            if (Math.random() < density) {
+                line += STAR_CHAR;
+            } else {
+                line += EMPTY_CHAR;
+            }
+        }
+        print(line);
+        await sleep(DELAY);
+    }
+}
+
+main();
+</script>
+
+</body>
+</html>

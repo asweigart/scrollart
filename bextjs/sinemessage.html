@@ -1,0 +1,43 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Sine Message Scroll Art</title>
+</head>
+<body>
+
+<textarea id="bextOutput" readonly></textarea><br />
+<!--<input id="bextInput" readonly />-->
+<button type="button" onclick="running = !running;">&#x23FB; Off</button>
+
+
+<script src="bext.js"></script>
+<link rel="stylesheet" href="bext.css">
+
+
+<script>
+
+bextRowBuffer = 256;  // Change this to whatever size you want, or -1 for infinite buffer.
+const DELAY = 100;
+let width = 120;
+let running = true;
+
+const MESSAGE = 'Hello, world!';
+const STEP_INCREASE = 0.004;
+
+
+async function main() {
+    let step = 0.0;
+    while (running) {
+        let multiplier = (width - MESSAGE.length) / 2;
+        let padding = ' '.repeat(Math.floor((Math.sin(step * (180 / Math.PI)) + 1) * multiplier));
+        print(padding + MESSAGE);
+        step += STEP_INCREASE;
+        await sleep(DELAY);
+    }
+}
+
+main();
+</script>
+
+</body>
+</html>

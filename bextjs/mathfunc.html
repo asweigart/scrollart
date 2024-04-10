@@ -1,0 +1,63 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Math Func Scroll Art</title>
+</head>
+<body>
+
+<textarea id="bextOutput" readonly></textarea><br />
+<!--<input id="bextInput" readonly />-->
+<button type="button" onclick="running = !running;">&#x23FB; Off</button>
+
+
+<script src="bext.js"></script>
+<link rel="stylesheet" href="bext.css">
+
+
+<script>
+
+bextRowBuffer = 256;  // Change this to whatever size you want, or -1 for infinite buffer.
+const DELAY = 100;
+let width = 220;
+
+let running = true;
+const FUNC = (x, y) => ((x ^ y) % 5) !== 0;
+const TOP_BLOCK = String.fromCodePoint(9600);
+const BOTTOM_BLOCK = String.fromCodePoint(9604);
+const FULL_BLOCK = String.fromCodePoint(9608);
+const EMPTY_BLOCK = ' ';
+
+
+async function main() {
+    let y = 0;
+    while (running) {
+        let line = '';
+        for (let x = 0; x < width; x++) {
+            let topBit = FUNC(x, y);
+            let bottomBit = FUNC(x, y + 1);
+
+            // Flipping the bits because I think they often look better this way:
+            topBit = !topBit;
+            bottomBit = !bottomBit;
+
+            if (topBit && bottomBit) {
+                line += FULL_BLOCK;
+            } else if (topBit && !bottomBit) {
+                line += TOP_BLOCK;
+            } else if (!topBit && bottomBit) {
+                line += BOTTOM_BLOCK;
+            } else {
+                line += ' ';
+            }
+        }
+        print(line);
+        y += 2;
+        await sleep(DELAY);
+    }
+}
+
+main();
+</script>
+
+</body>
+</html>
