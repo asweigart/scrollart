@@ -16,7 +16,7 @@ def main():
     while True:
         # -1 because Windows adds newlines if anything
         # is printed in the rightmost column.
-        width = os.get_terminal_size()[0] - 1
+        width = os.get_terminal_size().columns - 1
         triangleWidth = (width - 2) // 4
 
         # Increase/decrease the density of triangles, until you

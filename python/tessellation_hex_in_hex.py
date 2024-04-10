@@ -9,7 +9,8 @@ r"""
  \____/ /  \ \____/ /  \ \____/ /  \ \____/ /  \ \____/ /  \
 """
 
-import time, os
+import os
+import time
 
 DELAY = 0.1
 

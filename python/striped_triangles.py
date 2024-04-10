@@ -1,4 +1,6 @@
-import random, time, os
+import os
+import random
+import time
 
 r"""
   \        /      \ \ \    / / /
@@ -62,9 +64,12 @@ def main():
                 row1.append('     ')
                 row2.append('   ')
                 row3.append(' ')
-        print(''.join(row1)); time.sleep(DELAY)
-        print(''.join(row2)); time.sleep(DELAY)
-        print(''.join(row3)); time.sleep(DELAY)
+        print(''.join(row1))
+        time.sleep(DELAY)
+        print(''.join(row2))
+        time.sleep(DELAY)
+        print(''.join(row3))
+        time.sleep(DELAY)
 
 
         # Draw a row that starts with an upside down triangle on the left side.
@@ -100,9 +105,12 @@ def main():
                 row2.append('   ')
                 row3.append('     ')
 
-        print(''.join(row1)); time.sleep(DELAY)
-        print(''.join(row2)); time.sleep(DELAY)
-        print(''.join(row3)); time.sleep(DELAY)
+        print(''.join(row1))
+        time.sleep(DELAY)
+        print(''.join(row2))
+        time.sleep(DELAY)
+        print(''.join(row3))
+        time.sleep(DELAY)
 
 try:
     main()

@@ -7,7 +7,8 @@
  ))(  ))(  ))(  ))(  ))(  ))(  ))(  ))(  ))(  ))(  ))(  ))(
 """
 
-import time, os
+import os
+import time
 
 DELAY = 0.1
 

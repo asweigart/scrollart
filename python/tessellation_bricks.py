@@ -5,7 +5,8 @@ ___|___|___|___|___|
 _|___|___|___|___|
 """
 
-import time, os
+import os
+import time
 
 DELAY = 0.1
 

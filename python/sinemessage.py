@@ -2,7 +2,7 @@ import math, time, os, sys
 
 width = os.get_terminal_size()[0] - 1
 DELAY = 0.1
-STEP_INCREASE = 0.1
+STEP_INCREASE = 0.2
 
 def main():
     if len(sys.argv) > 1:

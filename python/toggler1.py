@@ -1,4 +1,6 @@
-import random, time, os
+import os
+import random
+import time
 
 """
 In this program, the togglers start in a random column and move
@@ -8,7 +10,7 @@ left or right.
 DELAY = 0.05
 TOGGLER_DENSITY = 10
 
-RIGHT_INCREMENT = 3  # Try changing this to a different integer.
+RIGHT_INCREMENT = 1  # Try changing this to a different integer.
 LEFT_INCREMENT = RIGHT_INCREMENT * -1
 
 def main():
@@ -43,7 +45,8 @@ def main():
 
             togglers[i][0] += togglerDirection  # move the toggler
 
-        print(''.join(columnChars)); time.sleep(DELAY)
+        print(''.join(columnChars))
+        time.sleep(DELAY)
 
 try:
     main()

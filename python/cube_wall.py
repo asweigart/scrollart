@@ -1,4 +1,11 @@
+import os
+import random
+import time
+
 r"""
+Example drawings of cubes.
+For now, we'll just leave side 2 always unshaded, because it's tricky to correctly shade it.
+
    ______
   /     /\
  /     /  \
@@ -86,11 +93,8 @@ r"""
 \     \    /
  \BOTM \  /
   \     \/
-"""
 
 
-# TODO - for now, we'll just leave side 2 always unshaded, because it's tricky to correctly shade it.
-r"""
   /     /\     \SID2/
  /TOP1 /  \BTM2 \  /
 /_____/SID1\_____\/
@@ -99,7 +103,6 @@ r"""
   \_____\/_____/SID2\
 """
 
-import os, time, random
 
 DELAY = 0.1
 
@@ -118,8 +121,6 @@ def main():
         row4 = []
         row5 = []
         row6 = []
-
-
 
         for i in range(segmentWidth):
 
@@ -165,12 +166,18 @@ def main():
             row6.append(f'  \\{bottom1ShadingBottom}\\/{top2ShadingBottom}/  ')
 
 
-        print(''.join(row1)); time.sleep(DELAY)
-        print(''.join(row2)); time.sleep(DELAY)
-        print(''.join(row3)); time.sleep(DELAY)
-        print(''.join(row4)); time.sleep(DELAY)
-        print(''.join(row5)); time.sleep(DELAY)
-        print(''.join(row6)); time.sleep(DELAY)
+        print(''.join(row1))
+        time.sleep(DELAY)
+        print(''.join(row2))
+        time.sleep(DELAY)
+        print(''.join(row3))
+        time.sleep(DELAY)
+        print(''.join(row4))
+        time.sleep(DELAY)
+        print(''.join(row5))
+        time.sleep(DELAY)
+        print(''.join(row6))
+        time.sleep(DELAY)
 
 
 try:

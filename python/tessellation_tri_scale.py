@@ -18,7 +18,8 @@ __/   __/
 
 """
 
-import time, os
+import os
+import time
 
 DELAY = 0.1
 
@@ -47,4 +48,4 @@ def main():
 try:
     main()
 except KeyboardInterrupt:
-    print('Tessellation Tri Scales, by Al Sweigart al@inventwithpython.com')
+    print('Tessellation Triangular Scales, by Al Sweigart al@inventwithpython.com')

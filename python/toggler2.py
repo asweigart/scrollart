@@ -1,4 +1,6 @@
-import random, time, os
+import os
+import random
+import time
 
 """
 In this program, the togglers start in a random column and move
@@ -45,7 +47,8 @@ def main():
 
             togglers[i][0] += togglerDirection  # move the toggler
 
-        print(''.join(columnChars)); time.sleep(DELAY)
+        print(''.join(columnChars))
+        time.sleep(DELAY)
 
 try:
     main()
