@@ -21,12 +21,10 @@ try:
 
         for i in range(len(CHARS)):
             row[int((math.sin(sine_steps[i]) + 1) / 2 * WIDTH)] = CHARS[i]
+            sine_steps[i] += SINE_STEP_INCS[i]
 
         print(''.join(row))
 
-        for i in range(len(CHARS)):
-            sine_steps[i] += SINE_STEP_INCS[i]
-
         time.sleep(DELAY)
 except KeyboardInterrupt:
-    print('Helix Cascade, by Al Sweigart al@inventwithpython.com 2024')
+    print('Helix Travels, by Al Sweigart al@inventwithpython.com 2024')

@@ -1,9 +1,9 @@
 import time
 
-WALLPAPER = 'angles'
+WALLPAPER = 'bigskull'
 
 DELAY = 0.4
-WIDTH = 80
+WIDTH = 160
 
 WALLPAPER_PATTERNS = {  # Change as desired; All rows must be the same length.
     'shining carpet': [
@@ -67,7 +67,16 @@ WALLPAPER_PATTERNS = {  # Change as desired; All rows must be the same length.
         '/\\',
         ' /',
         ' \\',
-    ],
+    ], 'bigskull': [
+    r' |  ______  | (_)  (_)', 
+    r' | /      \ |         ', 
+    r'/ / _    _ \ \   ^^   ', 
+    r' | (_)  (_) | VVVVVVVV', 
+    r' |          |  \____/ ', 
+    r'  \   ^^   /   ______ ', 
+     '   VVVVVVVV   /      \\', 
+    r'\   \____/   / _    _ ', 
+    ]
 }
 
 

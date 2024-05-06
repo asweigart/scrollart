@@ -9,7 +9,7 @@ STRUT_CHAR = '#'
 
 try:
     strut_points = [(0, True)]  # list of (position, going_right_bool)
-    next_strut_point_at = random.randint(1, WIDTH - 2)
+    next_strut_point_at = random.randint(1, WIDTH // 2)
     
 
     while True:
@@ -18,7 +18,7 @@ try:
         # There's a buggy case where somehow strut_points can end up empty. Let's just restart it then:
         if len(strut_points) == 0:
             strut_points = [(0, True)]  # list of (position, going_right_bool)
-            next_strut_point_at = random.randint(1, WIDTH - 2)
+            next_strut_point_at = random.randint(1, WIDTH // 2)
 
         # Add a new strut point if it is time
         if strut_points[-1][0] == next_strut_point_at:

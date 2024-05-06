@@ -5,6 +5,7 @@ os.system('cls | clear')  # Clear the screen
 # Constants for settings:
 DELAY = 0.2
 WIDTH = shutil.get_terminal_size()[0] - 1
+GAP_PROBABILITY = 0.96
 
 # This setting changes the behavior to create the "long vertical style" if greater than 0.0:
 VERTICAL_STYLE_FACTOR = 1.0  # Set between 0.0 and 1.0
@@ -50,6 +51,8 @@ try:
 
             # The downward and right side connection can be either:
             down_connect = random.choice((True, False))
+            if random.random() < GAP_PROBABILITY:
+                down_connect = False
 
             if i == WIDTH - 1:
                 # make the rightmost column never connect off the right edge:
@@ -67,6 +70,8 @@ try:
                     down_connect = True
             else:
                 right_connect = random.choice((True, False))
+                if random.random() < GAP_PROBABILITY:
+                    right_connect = False
 
             # Override right_connect value if VERTICAL_STYLE_FACTOR is greater than 0.0:
             if random.random() < VERTICAL_STYLE_FACTOR:

@@ -21,6 +21,7 @@ def get_contiguous_columns_of_length(columns_left, length):
 try:
     columns = [random.choice(EMPTY_CHARS)] * WIDTH
     makeEmpty = False
+    iteration = 0
 
     while True:
         columns_left = set(range(WIDTH))
@@ -35,6 +36,7 @@ try:
                 # change ALL of the remaining columns
                 columns = [new_char] * WIDTH
                 columns_left = set()
+                current_wipe_num = 1
             else:
                 if BLOCK_MODE:
                     # Find contiguous columns (at least SIMULTAENOUS_STRIPES in length)
@@ -69,6 +71,9 @@ try:
 
             current_wipe_num += 1
         makeEmpty = not makeEmpty
+        iteration += 1
+        if iteration % 2 == 0:
+            BLOCK_MODE = not BLOCK_MODE
 
 
 except KeyboardInterrupt:

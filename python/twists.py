@@ -3,10 +3,10 @@ import os, random, time, math
 WIDTH = os.get_terminal_size()[0] - 1
 DELAY = 0.008
 
-NUM_COLUMNS = 5
-COLUMN_WIDTH = 4
+NUM_COLUMNS = 6
+COLUMN_WIDTH = 12
 
-COLUMN_CHAR = '@'
+COLUMN_CHAR = '|'
 EMPTY_CHAR = ' '
 
 GAP_SIZE = (WIDTH - COLUMN_WIDTH) // (NUM_COLUMNS + 1)
@@ -14,6 +14,8 @@ BETWEEN_TWIST_LENGTH = 0
 TWIST_LENGTH = 50
 
 SINE_STEP_INC = (math.pi / 2) / TWIST_LENGTH
+
+to_twist = random.randint(1, NUM_COLUMNS - 1)
 
 try:
     while True:
@@ -30,7 +32,12 @@ try:
             time.sleep(DELAY)
 
         # Select two adjacent columns to twist:
-        to_twist = random.randint(1, NUM_COLUMNS - 1)
+        #to_twist = random.randint(1, NUM_COLUMNS - 1)
+        to_twist += random.randint(-1, 1)
+        if to_twist == 0:
+            to_twist = 2
+        if to_twist == NUM_COLUMNS:
+            to_twist = NUM_COLUMNS - 2
         
         
         for sine_step in range(TWIST_LENGTH):
@@ -39,8 +46,8 @@ try:
             in_transit_pos_left  = (to_twist     * GAP_SIZE) + int(math.sin(sine_step * SINE_STEP_INC) * GAP_SIZE)
             in_transit_pos_right = ((to_twist+1) * GAP_SIZE) - int(math.sin(sine_step * SINE_STEP_INC) * GAP_SIZE)
             for j in range(COLUMN_WIDTH):
-                columns[in_transit_pos_left + j] = '@'
-                columns[in_transit_pos_right + j] = '@'
+                columns[in_transit_pos_left + j] = COLUMN_CHAR
+                columns[in_transit_pos_right + j] = COLUMN_CHAR
 
             # Print straight columns (that are not being twisted currently):
             i = GAP_SIZE
