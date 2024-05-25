@@ -10,7 +10,8 @@ COLUMN_CHAR = '|'
 EMPTY_CHAR = ' '
 
 GAP_SIZE = (WIDTH - COLUMN_WIDTH) // (NUM_COLUMNS + 1)
-BETWEEN_TWIST_LENGTH = 0
+BETWEEN_TWIST_LENGTH_MIN = 0
+BETWEEN_TWIST_LENGTH_MAX = 50
 TWIST_LENGTH = 50
 
 SINE_STEP_INC = (math.pi / 2) / TWIST_LENGTH
@@ -27,6 +28,7 @@ try:
                 columns[(i * GAP_SIZE) + j] = COLUMN_CHAR
 
         # Print straight columns:
+        rows_between_twist = random.randint(BETWEEN_TWIST_LENGTH_MIN, BETWEEN_TWIST_LENGTH_MAX)
         for i in range(BETWEEN_TWIST_LENGTH):
             print(''.join(columns))
             time.sleep(DELAY)

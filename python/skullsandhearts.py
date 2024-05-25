@@ -211,7 +211,7 @@ try:
         row = next_rows[0]
         del next_rows[0]
         print(''.join(row))
-        if step % 10 == 0:  # Print 10 rows at a time before pause
+        if step % 9 == 0:  # Print 9 rows at a time before pause
             time.sleep(DELAY)
         
 except KeyboardInterrupt:
