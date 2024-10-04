@@ -1,10 +1,11 @@
 import time, os, random, shutil, math
 
 WIDTH = shutil.get_terminal_size()[0] - 1
-CHARS = '@Oo+:.'
+CHARS = '.:+oO@'#'@Oo+:.'
 BACKGROUND = ' '
-DELAY = 0.03
+DELAY = 0.08
 CHANGE_DIV = 40
+MUTATION_RATE = 0.0
 
 def get_random_wave(z=0):
     wave = {}
@@ -16,7 +17,7 @@ def get_random_wave(z=0):
 
 
     wave['speed'] = min(random.random() + 0.3, 1.0) * 10
-    wave['amplitude'] = random.randint(WIDTH // 6, WIDTH // 2) / (z + 1)
+    wave['amplitude'] = random.randint(WIDTH // 6, WIDTH // 3) / ((z / 2) + 1)
     wave['char'] = CHARS[z] #random.choice(CHARS)
 
     return wave
@@ -28,8 +29,12 @@ step = 42  # Don't start at 0, just to avoid all the waves starting at 0 as well
 try:
     while True:
         row = [BACKGROUND for x in range(WIDTH)]
-        for wave in waves:
         #wave = waves[step % len(waves)]
+        for wave in waves:
+
+            if random.random() < MUTATION_RATE:
+                #wave['speed'] += random.randint(-10, 10) / 10
+                wave['amplitude'] += random.randint(-1, 1)
 
             wave_length = int((math.sin((step / CHANGE_DIV) * wave['speed']) + 1) * wave['amplitude'])
             if wave['side'] == 'left':
@@ -44,4 +49,3 @@ try:
         step += 1
 except KeyboardInterrupt:
     print('BundFC by Al Sweigart, 2024')
-
