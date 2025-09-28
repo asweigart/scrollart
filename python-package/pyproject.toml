@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scrollart"
+version = "0.1.0"
+description = "Scroll art is moving ASCII art produced by stdout text printed from a loop, \"animated\" as the text scrolls up the terminal."
+readme = "README.md"
+requires-python = ">=3.2"
+authors = [{name = "Al Sweigart" }]
+classifiers = [
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+]
+
+[project.scripts]
+scrollart = "scrollart:main"

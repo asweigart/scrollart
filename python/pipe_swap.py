@@ -21,6 +21,7 @@ UP_LEFT_ELBOW_PIPE = '+'
 EMPTY = ' '
 
 # Use box-drawing characters:
+
 HORIZONTAL_PIPE = chr(9472)  # '─'
 VERTICAL_PIPE = chr(9474)  # '│'
 DOWN_RIGHT_ELBOW_PIPE = chr(9484)  # '┌'
@@ -33,7 +34,7 @@ EMPTY = ' '
 WIDTH = 80
 PAUSE = 0.03
 NUM_PIPES = 26
-SWAP_CHANCE = 0.9
+SWAP_CHANCE = 0.8
 SWAP_MAX_DISTANCE = 20
 SWAP_MIN_DISTANCE = 6
 
@@ -54,10 +55,9 @@ try:
             row[pipe] = VERTICAL_PIPE
 
 
-        #print(''.join(row))
-        #time.sleep(PAUSE)
-
         if random.random() >= SWAP_CHANCE:
+            print(''.join(row))
+            time.sleep(PAUSE)
             continue  # Don't swap.
 
         # Select a pipe to swap:
