@@ -42,8 +42,20 @@ def main():
   snail_trail        - Animated snails leaving trails as they crawl across
   password_cracker   - Matrix-style password cracking animation
   dna                - Animated DNA double helix structure
-  spike              - Growing and shrinking spike pattern using terminal width''')
-    parser.add_argument('command', nargs='?', choices=['starfield', 'stripeout', 'twists', 'tsuro', 'pipe_swap', 'skybursts', 'forth_and_back', 'moire', 'skulls_and_hearts', 'pac_wall', 'inchworm', 'connected_pipes', 'diagonal_sweep', 'earthworm_tunnels', 'towers_and_towers', 'any_size_diagonal_maze', 'thorns', 'triangle_hall', 'vertical_struts', 'hex_portals', 'toggler1', 'toggler2', 'tri_grid_scaffold', 'orbital_travels', 'snail_trail', 'password_cracker', 'dna', 'spike'], 
+  spike              - Growing and shrinking spike pattern using terminal width
+  zigzag             - Simple zig zag animation that bounces left and right
+  diamond_sky        - Falling diamonds of various sizes with random patterns
+  ducklings          - Screensaver of many adorable ducklings
+  full_of_squares    - Falling squares using Unicode box-drawing characters
+  in_and_out         - Travelers moving in and out from screen edges with dynamic capacity
+  matrix             - Matrix-style digital rain with falling streams of characters
+  sine_message       - Message that oscillates horizontally using sine wave motion
+  proton_stream      - Multiple streams that move while maintaining distance constraints
+  striped_triangles  - Animated triangular patterns with changing density
+  math_func          - Mathematical visualization using Unicode block characters
+  cube_wall          - Wall of 3D cubes with random shading patterns
+  bundfc             - Architectural waves inspired by Shanghai's Bund Financial Center''')
+    parser.add_argument('command', nargs='?', choices=['starfield', 'stripeout', 'twists', 'tsuro', 'pipe_swap', 'skybursts', 'forth_and_back', 'moire', 'skulls_and_hearts', 'pac_wall', 'inchworm', 'connected_pipes', 'diagonal_sweep', 'earthworm_tunnels', 'towers_and_towers', 'any_size_diagonal_maze', 'thorns', 'triangle_hall', 'vertical_struts', 'hex_portals', 'toggler1', 'toggler2', 'tri_grid_scaffold', 'orbital_travels', 'snail_trail', 'password_cracker', 'dna', 'spike', 'zigzag', 'diamond_sky', 'ducklings', 'full_of_squares', 'in_and_out', 'matrix', 'sine_message', 'proton_stream', 'striped_triangles', 'math_func', 'cube_wall', 'bundfc'], 
                        help='The scroll art command to run')
     
     args = parser.parse_args()
@@ -134,6 +146,42 @@ def main():
         elif args.command == 'spike':
             credit = 'Spike, by Al Sweigart al@inventwithpython.com 2024'
             spike()
+        elif args.command == 'zigzag':
+            credit = 'Zigzag, by Al Sweigart al@inventwithpython.com'
+            zigzag()
+        elif args.command == 'diamond_sky':
+            credit = 'Diamond Sky, by Al Sweigart al@inventwithpython.com 2024'
+            diamond_sky()
+        elif args.command == 'ducklings':
+            credit = 'Ducklings, by Al Sweigart al@inventwithpython.com 2021'
+            ducklings()
+        elif args.command == 'full_of_squares':
+            credit = 'Full of Squares, by Al Sweigart al@inventwithpython.com 2024'
+            full_of_squares()
+        elif args.command == 'in_and_out':
+            credit = 'In and Out, by Al Sweigart al@inventwithpython.com 2024'
+            in_and_out()
+        elif args.command == 'matrix':
+            credit = 'Matrix Screensaver, by Al Sweigart al@inventwithpython.com 2021'
+            matrix()
+        elif args.command == 'sine_message':
+            credit = 'Sine Message, by Al Sweigart al@inventwithpython.com 2021'
+            sine_message()
+        elif args.command == 'proton_stream':
+            credit = 'Proton Stream, by Al Sweigart al@inventwithpython.com 2024'
+            proton_stream()
+        elif args.command == 'striped_triangles':
+            credit = 'Striped Triangles, by Al Sweigart al@inventwithpython.com'
+            striped_triangles()
+        elif args.command == 'math_func':
+            credit = 'Math Function Visualization, by Al Sweigart al@inventwithpython.com'
+            math_func()
+        elif args.command == 'cube_wall':
+            credit = 'Cube Wall, by Al Sweigart al@inventwithpython.com 2022'
+            cube_wall()
+        elif args.command == 'bundfc':
+            credit = 'BundFC by Al Sweigart al@inventwithpython.com 2024'
+            bundfc()
         else:
             parser.print_help()
     except KeyboardInterrupt:
@@ -145,7 +193,12 @@ def starfield(change_amount=0.005, delay=0.02, star_char='*', empty_char=' ', wi
     row_count = 0
 
     while True:
-        _width = width or shutil.get_terminal_size()[0]
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
 
         if density < 0 or density > 1.0:
             change_amount *= -1
@@ -260,9 +313,6 @@ def stripeout_simple():
 def stripeout(fill_chars='#@O.:!', empty_chars=' ', delay=0.004, height=40, max_wipes=99, width=None, max_rows=None):
     """Creates an animated stripe-out effect that alternates between filling and emptying the screen."""
     
-    # Use the global WIDTH but subtract 1 like in the original
-    _width = width or shutil.get_terminal_size()[0]
-    simultaneous_stripes = _width // 10
     block_mode = False
     
     def get_contiguous_columns_of_length(columns_left, length):
@@ -272,14 +322,20 @@ def stripeout(fill_chars='#@O.:!', empty_chars=' ', delay=0.004, height=40, max_
                 contiguous_columns.add(i)
         return contiguous_columns
 
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+                
+    simultaneous_stripes = _width // 10
     columns = [random.choice(empty_chars)] * _width
     make_empty = False
     iteration = 0
     row_count = 0
 
     while True:
-        _width = width or shutil.get_terminal_size()[0]
-
         columns_left = set(range(_width))
         if make_empty:
             new_char = random.choice(empty_chars)
@@ -397,8 +453,6 @@ def twists(delay=0.008, num_columns=6, column_width=12, column_char='|', empty_c
            between_twist_length_min=0, between_twist_length_max=50, twist_length=50, width=None, max_rows=None):
     """Creates an animated twist effect with columns that twist around each other."""
     
-    _width = (width or shutil.get_terminal_size()[0]) - 1
-    gap_size = (_width - column_width) // (num_columns + 1)
     between_twist_length = random.randint(between_twist_length_min, between_twist_length_max)
     sine_step_inc = (math.pi / 2) / twist_length
     
@@ -406,6 +460,14 @@ def twists(delay=0.008, num_columns=6, column_width=12, column_char='|', empty_c
     row_count = 0
 
     while True:
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+        gap_size = (_width - column_width) // (num_columns + 1)
+
         # Set up straight columns:
         columns = [empty_char] * _width
         for i in range(1, num_columns + 1):
@@ -538,13 +600,17 @@ def tsuro(delay=0.1, width=None, max_rows=None):
         return t
 
     # Generate and print tiles infinitely, row by row
-    _width = width or shutil.get_terminal_size()[0]
     current_tile_row = []  # Store current row of tiles being processed
     tile_row_index = 0     # Which row within the 5x5 tiles we're currently printing
     row_count = 0
     
     while True:
-        _width = width or shutil.get_terminal_size()[0]
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
 
         # When starting a new set of tiles (every 5 rows)
         if tile_row_index == 0:
@@ -592,7 +658,12 @@ def pipe_swap(width=None, delay=0.03, num_pipes=26, swap_chance=0.8,
     UP_LEFT_ELBOW_PIPE = chr(9496)     # '┘'
     EMPTY = ' '
     
-    _width = width or shutil.get_terminal_size()[0]
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     # Set up initial pipe locations:
     pipes = set()
@@ -603,7 +674,6 @@ def pipe_swap(width=None, delay=0.03, num_pipes=26, swap_chance=0.8,
     
     # Main loop:
     while True:
-        _width = width or shutil.get_terminal_size()[0]
         # Start with a blank row:
         row = [EMPTY] * _width
 
@@ -663,7 +733,12 @@ def skybursts(delay=0.02, burst_probability=0.01, min_num_streams=4, max_num_str
               min_stream_length=4, max_stream_length=12, burst_chars='@.', empty_chars=' ', width=None, max_rows=None):
     """Creates firework-like bursts that radiate from random points across the screen."""
     
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     def normalize_img(img):
         """Normalize image coordinates to start from (0,0)."""
@@ -778,7 +853,12 @@ def forth_and_back(width=None, delay=0.01, block_char='#', block_width=14,
                    initial_steps_before_switch=20, reset_interval=1000, max_rows=None):
     """A block that bounces back and forth with acceleration and deceleration."""
     
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     steps_before_switch = initial_steps_before_switch
     empty_chars = list('~                                          ')
@@ -841,7 +921,12 @@ def moire(width=None, delay=0.04, moire_char=':', empty_char=' ', min_circle_rad
           sine_inc=0.1, max_rows=None):
     """Creates overlapping circles with sine wave producing moire interference patterns."""
     
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     def normalize_img(img):
         """Normalize image coordinates to start from (0,0)."""
@@ -953,7 +1038,12 @@ def skulls_and_hearts(width=None, delay=0.2, heart_interior=':', min_heart_size=
                      max_heart_size=4, heart_probability=0.001, batch_size=9, max_rows=None):
     """Hearts floating over a repeating background pattern of skulls."""
     
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     SKULL_TEMPLATE = [
         r'|          ______          | (_)  (_) ', 
@@ -1074,7 +1164,12 @@ def skulls_and_hearts(width=None, delay=0.2, heart_interior=':', min_heart_size=
 def pac_wall(width=None, delay=0.1, size=5, empty_char=' ', chars='\\/-|', max_rows=None):
     """Creates vertical columns of alternating characters and spaces in a wall pattern."""
     
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     def pacwall_generator():
         """Generator that yields rows for the pacwall pattern."""
@@ -1111,7 +1206,12 @@ def pac_wall(width=None, delay=0.1, size=5, empty_char=' ', chars='\\/-|', max_r
 def inchworm(width=None, delay=0.5, worm_length=3, stretched_char='o', bunched_char='O', max_cycles=None):
     """Animated worm that stretches and bunches as it moves across the screen."""
     
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     stretched_body = stretched_char + (stretched_char * (worm_length * 2)) + stretched_char
     bunched_body = stretched_char + (bunched_char * worm_length) + stretched_char
@@ -1152,7 +1252,12 @@ def inchworm(width=None, delay=0.5, worm_length=3, stretched_char='o', bunched_c
 def connected_pipes(width=None, delay=0.2, gap_probability=0.96, vertical_style_factor=1.0, max_rows=None):
     """Network of connected pipes using Unicode box-drawing characters."""
     
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     # Unicode box-drawing characters
     UP_DOWN_CHAR         = chr(9474)  # '│'
@@ -1256,7 +1361,12 @@ def connected_pipes(width=None, delay=0.2, gap_probability=0.96, vertical_style_
 def diagonal_sweep(width=None, delay=0.002, empty_char=' ', sweep_char='@', max_rows=None):
     """Diagonal sweep pattern that alternates between drawing and erasing across columns."""
     
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     pos = 0
     columns = [empty_char] * _width
@@ -1286,7 +1396,12 @@ def earthworm_tunnels(width=None, delay=0.02, empty_char=' ', dirt_chars='\\/', 
     """
     Simulates worms tunneling through dirt with regrowth mechanics
     """
-    _width = width or shutil.get_terminal_size()[0]
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     # Initialize the dirt field
     dirt_field = []
@@ -1354,7 +1469,12 @@ def towers_and_towers(width=None, delay=0.0075, after_tower_delay=0.75, wipe_aft
     """
     Animated tower construction with overlapping structures that build up and get wiped
     """
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     EMPTY_CHAR = ' '
     CORNER_CHAR = '+'
@@ -1464,7 +1584,12 @@ def any_size_diagonal_maze(width=None, delay=0.1, maze_size=4, max_rows=None):
     """
     Creates a diagonal maze pattern with random forward and back slashes
     """
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     EMPTY = ' '
     FORWARD_SLASH = chr(9585)  # ╱
@@ -1501,7 +1626,6 @@ def thorns(width=None, delay=0.005, thorn_char='-', max_rows=None):
     """
     Creates random length thorn lines centered on the screen
     """
-    _width = width or shutil.get_terminal_size()[0]
     
     LEVELS = [1, 1, 1, 1, 1, 1, 1, 3, 6]
     MULTIPLIER = 10
@@ -1509,6 +1633,13 @@ def thorns(width=None, delay=0.005, thorn_char='-', max_rows=None):
     row_count = 0
     
     while True:
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
         line_length = int(random.choice(LEVELS) * ((random.random() + 1) * MULTIPLIER))
         line = thorn_char * line_length
         
@@ -1526,72 +1657,69 @@ def triangle_hall(width=None, delay=0.008, empty_char=' ', strut_char='#', max_r
     """
     Animated strut points that create triangular patterns by moving left and right
     """
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
-    try:
-        strut_points = [(0, True)]  # list of (position, going_right_bool)
-        next_strut_point_at = random.randint(1, _width // 2)
-        row_count = 0
+    strut_points = [(0, True)]  # list of (position, going_right_bool)
+    next_strut_point_at = random.randint(1, _width // 2)
+    row_count = 0
+    
+    while True:
+        row = [empty_char] * _width
         
-        while True:
-            row = [empty_char] * _width
+        # There's a buggy case where somehow strut_points can end up empty. Let's just restart it then:
+        if len(strut_points) == 0:
+            strut_points = [(0, True)]  # list of (position, going_right_bool)
+            next_strut_point_at = random.randint(1, _width // 2)
+        
+        # Add a new strut point if it is time
+        if strut_points[-1][0] == next_strut_point_at:
+            strut_points.append((next_strut_point_at, not strut_points[-1][1]))
             
-            # There's a buggy case where somehow strut_points can end up empty. Let's just restart it then:
-            if len(strut_points) == 0:
-                strut_points = [(0, True)]  # list of (position, going_right_bool)
-                next_strut_point_at = random.randint(1, _width // 2)
-            
-            # Add a new strut point if it is time
-            if strut_points[-1][0] == next_strut_point_at:
-                strut_points.append((next_strut_point_at, not strut_points[-1][1]))
-                
-                if strut_points[-1][1]:
-                    # next next_strut_point_at between here and right edge
-                    if (_width - 1) - next_strut_point_at > (_width // 2):
-                        # The distance to the right edge is too far, so let's do somewhere closer
-                        next_strut_point_at = random.randint(next_strut_point_at, (_width - 1 - next_strut_point_at) // 2 + next_strut_point_at)
-                    else:
-                        next_strut_point_at = random.randint(next_strut_point_at, _width - 1)
+            if strut_points[-1][1]:
+                # next next_strut_point_at between here and right edge
+                if (_width - 1) - next_strut_point_at > (_width // 2):
+                    # The distance to the right edge is too far, so let's do somewhere closer
+                    next_strut_point_at = random.randint(next_strut_point_at, (_width - 1 - next_strut_point_at) // 2 + next_strut_point_at)
                 else:
-                    # next next_strut_point_at between here and left edge
-                    if next_strut_point_at - 0 > (_width // 2):
-                        # the distance to the left edge is too far, so let's do somewhere closer
-                        next_strut_point_at = random.randint(next_strut_point_at // 2, next_strut_point_at)
-                    else:
-                        next_strut_point_at = random.randint(0, next_strut_point_at)
+                    next_strut_point_at = random.randint(next_strut_point_at, _width - 1)
+            else:
+                # next next_strut_point_at between here and left edge
+                if next_strut_point_at - 0 > (_width // 2):
+                    # the distance to the left edge is too far, so let's do somewhere closer
+                    next_strut_point_at = random.randint(next_strut_point_at // 2, next_strut_point_at)
+                else:
+                    next_strut_point_at = random.randint(0, next_strut_point_at)
+        
+        # Create the row characters
+        delete_indexes = []
+        for i, (pos, going_right) in enumerate(strut_points):
+            if 0 <= pos < _width:
+                row[pos] = strut_char
             
-            # Create the row characters
-            delete_indexes = []
-            for i, (pos, going_right) in enumerate(strut_points):
-                if 0 <= pos < _width:
-                    row[pos] = strut_char
-                
-                # Move strut points (or mark them for deletion)
-                if pos == _width - 1 and going_right:
-                    delete_indexes.append(i)
-                elif pos == 0 and not going_right:
-                    delete_indexes.append(i)
-                elif going_right:
-                    strut_points[i] = (pos + 1, True)
-                elif not going_right:
-                    strut_points[i] = (pos - 1, False)
-            
-            # Remove strut points that have gone off the sides:
-            for i in range(len(delete_indexes) - 1, -1, -1):
-                del strut_points[delete_indexes[i]]
-            
-            print(''.join(row))
-            row_count += 1
-            if max_rows and row_count >= max_rows:
-                return
-            time.sleep(delay)
-    
-    except KeyboardInterrupt:
-        print('\n\nScrollArt Credits:')
-        print('- Created with love for terminal art enthusiasts')
-        print('- Unicode box-drawing characters: ─│┌┐└┘├┤┬┴┼')
-        print('- Mathematical beauty in motion')
-        print('- Inspired by classic computer graphics and demos')
+            # Move strut points (or mark them for deletion)
+            if pos == _width - 1 and going_right:
+                delete_indexes.append(i)
+            elif pos == 0 and not going_right:
+                delete_indexes.append(i)
+            elif going_right:
+                strut_points[i] = (pos + 1, True)
+            elif not going_right:
+                strut_points[i] = (pos - 1, False)
+        
+        # Remove strut points that have gone off the sides:
+        for i in range(len(delete_indexes) - 1, -1, -1):
+            del strut_points[delete_indexes[i]]
+        
+        print(''.join(row))
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+        time.sleep(delay)
 
 
 def vertical_struts(width=None, delay=0.01, min_vertical_span=10, max_vertical_span=30, 
@@ -1599,7 +1727,12 @@ def vertical_struts(width=None, delay=0.01, min_vertical_span=10, max_vertical_s
     """
     Creates vertical struts with horizontal crossbeams at random positions
     """
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     row_count = 0
     
@@ -1632,77 +1765,75 @@ def hex_portals(width=None, delay=0.1, empty_chars='/\\_    ', density=0.0025,
     """
     Creates hexagonal portals with optional interior patterns scrolling down the screen
     """
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
+    next_rows = []
+    row_count = 0
     
-    try:
-        next_rows = []
-        row_count = 0
+    while True:
+        # Make sure there are enough rows in `next_rows`:
+        for i in range((max_size * 2 + 2) - len(next_rows)):
+            next_rows.append([random.choice(empty_chars) for i in range(_width)])
         
-        while True:
-            # Make sure there are enough rows in `next_rows`:
-            for i in range((max_size * 2 + 2) - len(next_rows)):
-                next_rows.append([random.choice(empty_chars) for i in range(_width)])
+        for pos in range(0, _width - (max_size * 4 + 1)):
+            if random.random() >= density:
+                # Don't create a hexagon here.
+                continue
             
-            for pos in range(0, _width - (max_size * 4 + 1)):
-                if random.random() >= density:
-                    # Don't create a hexagon here.
-                    continue
-                
-                size = random.randint(min_size, max_size)
-                
-                # Draw new hexagon to next_rows:
-                for i in range(pos + 1 + size, pos + 1 + size + (2 * size + 1)):
-                    if i < _width:
-                        next_rows[0][i] = '_'  # Top row of underscores
-                        if size * 2 < len(next_rows) and i < _width:
-                            next_rows[size * 2][i] = '_'  # Bottom row of underscores
-                
-                for i in range(size):
-                    # Top left slashes
-                    if (size - i < len(next_rows) and 
-                        pos + 1 + i < _width):
-                        next_rows[size - i][pos + 1 + i] = '/'
-                    
-                    # Bottom left slashes
-                    if (size + 1 + i < len(next_rows) and 
-                        pos + 1 + i < _width):
-                        next_rows[size + 1 + i][pos + 1 + i] = '\\'
-                    
-                    # Top right slashes
-                    right_pos = pos + 1 + (size * 3) + 1 + (size - i - 1)
-                    if (size - i < len(next_rows) and right_pos < _width):
-                        next_rows[size - i][right_pos] = '\\'
-                    
-                    # Bottom right slashes
-                    if (size + 1 + i < len(next_rows) and right_pos < _width):
-                        next_rows[size + 1 + i][right_pos] = '/'
-                
-                if interior_chars:
-                    # Draw interior characters on inside of hexagon
-                    for i in range(1, size + 1):
-                        for j in range(size - i + 2, size * 3 + 1 + i):
-                            if pos + j < _width:
-                                if random.random() < interior_density:
-                                    if i < len(next_rows):
-                                        next_rows[i][pos + j] = random.choice(interior_chars)
-                                if (random.random() < interior_density and i != 1 and 
-                                    size * 2 - i + 1 < len(next_rows)):
-                                    next_rows[size * 2 - i + 1][pos + j] = random.choice(interior_chars)
+            size = random.randint(min_size, max_size)
             
-            # Display the next rows:
-            print(''.join(next_rows[0]))
-            del next_rows[0]
-            row_count += 1
-            if max_rows and row_count >= max_rows:
-                return
-            time.sleep(delay)
-    
-    except KeyboardInterrupt:
-        print('\n\nScrollArt Credits:')
-        print('- Created with love for terminal art enthusiasts')
-        print('- Unicode box-drawing characters: ─│┌┐└┘├┤┬┴┼')
-        print('- Mathematical beauty in motion')
-        print('- Inspired by classic computer graphics and demos')
+            # Draw new hexagon to next_rows:
+            for i in range(pos + 1 + size, pos + 1 + size + (2 * size + 1)):
+                if i < _width:
+                    next_rows[0][i] = '_'  # Top row of underscores
+                    if size * 2 < len(next_rows) and i < _width:
+                        next_rows[size * 2][i] = '_'  # Bottom row of underscores
+            
+            for i in range(size):
+                # Top left slashes
+                if (size - i < len(next_rows) and 
+                    pos + 1 + i < _width):
+                    next_rows[size - i][pos + 1 + i] = '/'
+                
+                # Bottom left slashes
+                if (size + 1 + i < len(next_rows) and 
+                    pos + 1 + i < _width):
+                    next_rows[size + 1 + i][pos + 1 + i] = '\\'
+                
+                # Top right slashes
+                right_pos = pos + 1 + (size * 3) + 1 + (size - i - 1)
+                if (size - i < len(next_rows) and right_pos < _width):
+                    next_rows[size - i][right_pos] = '\\'
+                
+                # Bottom right slashes
+                if (size + 1 + i < len(next_rows) and right_pos < _width):
+                    next_rows[size + 1 + i][right_pos] = '/'
+            
+            if interior_chars:
+                # Draw interior characters on inside of hexagon
+                for i in range(1, size + 1):
+                    for j in range(size - i + 2, size * 3 + 1 + i):
+                        if pos + j < _width:
+                            if random.random() < interior_density:
+                                if i < len(next_rows):
+                                    next_rows[i][pos + j] = random.choice(interior_chars)
+                            if (random.random() < interior_density and i != 1 and 
+                                size * 2 - i + 1 < len(next_rows)):
+                                next_rows[size * 2 - i + 1][pos + j] = random.choice(interior_chars)
+        
+        # Display the next rows:
+        print(''.join(next_rows[0]))
+        del next_rows[0]
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+        time.sleep(delay)
+
 
 
 def toggler1(width=None, delay=0.05, toggler_density=10, right_increment=1, 
@@ -1710,17 +1841,28 @@ def toggler1(width=None, delay=0.05, toggler_density=10, right_increment=1,
     """
     Moving togglers that flip characters between two states as they travel
     """
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     LEFT_INCREMENT = right_increment * -1
     
-    columnChars = [char1] * _width
     togglers = []  # List of [x position, direction moving]
     row_count = 0
     
     while True:
-        _width = (width or shutil.get_terminal_size()[0]) - 1
-        
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
+        columnChars = [char1] * _width
+
         # Adjust columnChars length if width changed
         if len(columnChars) != _width:
             if len(columnChars) < _width:
@@ -1762,16 +1904,21 @@ def toggler2(width=None, delay=0.05, toggler_density=10, right_increment=3,
     """
     Paired togglers that create triangular wave patterns by moving in opposite directions
     """
-    _width = (width or shutil.get_terminal_size()[0]) - 1
     
     LEFT_INCREMENT = right_increment * -1
-    
-    columnChars = [char1] * _width
+
     togglers = []  # List of [x position, direction moving]
     row_count = 0
     
     while True:
-        _width = (width or shutil.get_terminal_size()[0]) - 1
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
+        columnChars = [char1] * _width
         
         # Adjust columnChars length if width changed
         if len(columnChars) != _width:
@@ -1815,14 +1962,19 @@ def tri_grid_scaffold(width=None, delay=0.1, change_amount=4, max_rows=None):
     """
     Creates a triangular grid scaffolding pattern with varying density
     """
-    _width = (width or shutil.get_terminal_size()[0]) - 1
     
     density = 0
     changeAmt = change_amount
     row_count = 0
     
     while True:
-        _width = (width or shutil.get_terminal_size()[0]) - 1
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
         triangleWidth = (_width - 2) // 4
         
         # Increase/decrease the density of triangles, until you
@@ -1883,7 +2035,6 @@ def orbital_travels(width=None, delay=0.05, empty_char=' ',
     """
     Multiple characters orbiting in sine wave patterns at different speeds
     """
-    _width = width or shutil.get_terminal_size()[0] - 1
     
     # Initialize orbital characters
     orbital_chars = []
@@ -1898,7 +2049,13 @@ def orbital_travels(width=None, delay=0.05, empty_char=' ',
     row_count = 0
     
     while True:
-        _width = width or shutil.get_terminal_size()[0] - 1
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
         row = [empty_char] * _width
         
         for i in range(len(orbital_chars)):
@@ -1920,12 +2077,17 @@ def snail_trail(width=None, min_trail_len=5, trail_char='_', snail_chars='@V',
     """
     Animated snails that leave trails as they crawl across the screen
     """
-    _width = (width or shutil.get_terminal_size()[0]) - 1
     
     row_count = 0
     
     while True:
-        _width = (width or shutil.get_terminal_size()[0]) - 1
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
         trail_length = random.randint(min_trail_len, _width - 2)
         
         # Animate the snail crawling and building its trail
@@ -1953,7 +2115,12 @@ def password_cracker(width=None, delay=0.01, max_rows=None, one_line=False):
     """
     Matrix-style password cracking animation that gradually reveals a hidden message
     """
-    _width = (width or shutil.get_terminal_size()[0]) - 1
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
     
     # The hidden message to reveal
     message = "The sky above the port was the color of television, tuned to a dead channel."
@@ -1974,10 +2141,7 @@ def password_cracker(width=None, delay=0.01, max_rows=None, one_line=False):
     row_count = 0
     
     # Gradually reveal the message in random order
-    for reveal_count in range(len(message)):
-        # Update width in case terminal was resized
-        _width = (width or shutil.get_terminal_size()[0]) - 1
-        
+    for reveal_count in range(len(message)):        
         # Randomly change characters that haven't been revealed yet
         for _ in range(3):  # Multiple passes for more dynamic effect
             display_str = list(current)
@@ -2050,8 +2214,13 @@ def spike(delay=0.1, width=None, spike_char='-', max_rows=None):
     row_count = 0
     
     while True:
-        # Get current terminal width
-        _width = (width or shutil.get_terminal_size()[0]) - 1
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
         max_spike_length = int(math.sqrt(_width))
         
         # Growing phase
@@ -2071,3 +2240,1020 @@ def spike(delay=0.1, width=None, spike_char='-', max_rows=None):
             row_count += 1
             if max_rows and row_count >= max_rows:
                 return
+
+
+def zigzag(delay=0.05, zig_steps=20, pattern='********', width=None, max_rows=None):
+    """
+    Simple zig zag animation that bounces left and right
+    """
+    indent_size = 0  # How many spaces to indent
+    row_count = 0
+    
+    while True:  # The main program loop
+        # Get current terminal width to prevent overflow
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
+        max_indent = max(0, _width - len(pattern))
+        
+        # Zig to the right
+        for i in range(min(zig_steps, max_indent)):
+            indent_size = indent_size + 1
+            indentation = ' ' * indent_size
+            print(indentation + pattern)
+            time.sleep(delay)
+            
+            row_count += 1
+            if max_rows and row_count >= max_rows:
+                return
+        
+        # Zag to the left  
+        for i in range(min(zig_steps, max_indent)):
+            indent_size = indent_size - 1
+            indentation = ' ' * indent_size
+            print(indentation + pattern)
+            time.sleep(delay)
+            
+            row_count += 1
+            if max_rows and row_count >= max_rows:
+                return
+
+
+def diamond_sky(delay=0.1, width=None, min_diamond_size=1, max_diamond_size=8, 
+                chance_for_filled=0.3, diamonds_per_row=2, max_rows=None):
+    """
+    Falling diamonds of various sizes with random patterns
+    """
+    empty_chars = '                ...,'  # Characters for background
+    
+    def get_outline_diamond(size):
+        """Create an outlined diamond pattern"""
+        assert size > 0
+        rows = []
+        # Make the top half of the diamond
+        for i in range(size):
+            rows.append(([None] * (size - i - 1)) + ['/'] + ([' '] * (i * 2)) + ['\\'])
+        # Make the bottom half of the diamond
+        for i in range(size):
+            rows.append(([None] * i) + ['\\'] + ([' '] * ((size - i - 1) * 2)) + ['/'])
+        return rows
+    
+    def get_filled_diamond(size):
+        """Create a filled diamond pattern"""
+        assert size > 0
+        rows = []
+        # Make the top half of the diamond
+        for i in range(size):
+            rows.append(([None] * (size - i - 1)) + (['/'] * (i + 1)) + (['\\'] * (i + 1)))
+        # Make the bottom half of the diamond
+        for i in range(size):
+            rows.append(([None] * i) + (['\\'] * (size - i)) + (['/'] * (size - i)))
+        return rows
+    
+    next_rows = []
+    row_count = 0
+    
+    while True:
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
+        # Generate diamonds for this iteration
+        for j in range(diamonds_per_row):
+            size = random.randint(min_diamond_size, max_diamond_size)
+            
+            if random.random() < chance_for_filled:
+                diamond = get_filled_diamond(size)
+            else:
+                diamond = get_outline_diamond(size)
+            
+            x_start = random.randint(0, max(0, _width - 1 - (size * 2)))
+            
+            # Make sure there are enough rows in next_rows
+            while len(next_rows) < size * 2:
+                next_rows.append([random.choice(empty_chars) for i in range(_width)])
+            
+            # Add the diamond to next_rows
+            for y, row in enumerate(diamond):
+                for x, char in enumerate(row):
+                    if char is None:
+                        continue  # Skip None characters (transparent spaces)
+                    if x + x_start < _width:
+                        next_rows[y][x + x_start] = char
+        
+        # Print the row and then remove it
+        if next_rows:
+            print(''.join(next_rows[0]))
+            del next_rows[0]
+            time.sleep(delay)
+            
+            row_count += 1
+            if max_rows and row_count >= max_rows:
+                return
+
+
+class Duckling:
+    """A duckling with random body features for the ducklings screensaver."""
+    
+    def __init__(self):
+        """Create a new duckling with random body features."""
+        # Constants for duckling features
+        LEFT = 'left'
+        RIGHT = 'right'
+        BEADY = 'beady'
+        WIDE = 'wide'
+        HAPPY = 'happy'
+        ALOOF = 'aloof'
+        CHUBBY = 'chubby'
+        VERY_CHUBBY = 'very chubby'
+        OPEN = 'open'
+        CLOSED = 'closed'
+        OUT = 'out'
+        DOWN = 'down'
+        UP = 'up'
+        HEAD = 'head'
+        BODY = 'body'
+        FEET = 'feet'
+        
+        self.direction = random.choice([LEFT, RIGHT])
+        self.body = random.choice([CHUBBY, VERY_CHUBBY])
+        self.mouth = random.choice([OPEN, CLOSED])
+        self.wing = random.choice([OUT, UP, DOWN])
+        
+        if self.body == CHUBBY:
+            # Chubby ducklings can only have beady eyes
+            self.eyes = BEADY
+        else:
+            self.eyes = random.choice([BEADY, WIDE, HAPPY, ALOOF])
+        
+        self.part_to_display_next = HEAD
+    
+    def get_head_str(self):
+        """Returns the string of the duckling's head."""
+        LEFT = 'left'
+        RIGHT = 'right'
+        BEADY = 'beady'
+        WIDE = 'wide'
+        HAPPY = 'happy'
+        ALOOF = 'aloof'
+        CHUBBY = 'chubby'
+        VERY_CHUBBY = 'very chubby'
+        OPEN = 'open'
+        CLOSED = 'closed'
+        
+        head_str = ''
+        if self.direction == LEFT:
+            # Get the mouth
+            if self.mouth == OPEN:
+                head_str += '>'
+            elif self.mouth == CLOSED:
+                head_str += '='
+            
+            # Get the eyes
+            if self.eyes == BEADY and self.body == CHUBBY:
+                head_str += '"'
+            elif self.eyes == BEADY and self.body == VERY_CHUBBY:
+                head_str += '" '
+            elif self.eyes == WIDE:
+                head_str += "''"
+            elif self.eyes == HAPPY:
+                head_str += '^^'
+            elif self.eyes == ALOOF:
+                head_str += '``'
+            
+            head_str += ') '  # Get the back of the head
+        
+        if self.direction == RIGHT:
+            head_str += ' ('  # Get the back of the head
+            
+            # Get the eyes
+            if self.eyes == BEADY and self.body == CHUBBY:
+                head_str += '"'
+            elif self.eyes == BEADY and self.body == VERY_CHUBBY:
+                head_str += ' "'
+            elif self.eyes == WIDE:
+                head_str += "''"
+            elif self.eyes == HAPPY:
+                head_str += '^^'
+            elif self.eyes == ALOOF:
+                head_str += '``'
+            
+            # Get the mouth
+            if self.mouth == OPEN:
+                head_str += '<'
+            elif self.mouth == CLOSED:
+                head_str += '='
+        
+        if self.body == CHUBBY:
+            # Get an extra space so chubby ducklings are the same
+            # width as very chubby ducklings
+            head_str += ' '
+        
+        return head_str
+    
+    def get_body_str(self):
+        """Returns the string of the duckling's body."""
+        LEFT = 'left'
+        RIGHT = 'right'
+        CHUBBY = 'chubby'
+        VERY_CHUBBY = 'very chubby'
+        OUT = 'out'
+        DOWN = 'down'
+        UP = 'up'
+        
+        body_str = '('  # Get the left side of the body
+        if self.direction == LEFT:
+            # Get the interior body space
+            if self.body == CHUBBY:
+                body_str += ' '
+            elif self.body == VERY_CHUBBY:
+                body_str += '  '
+            
+            # Get the wing
+            if self.wing == OUT:
+                body_str += '>'
+            elif self.wing == UP:
+                body_str += '^'
+            elif self.wing == DOWN:
+                body_str += 'v'
+        
+        if self.direction == RIGHT:
+            # Get the wing
+            if self.wing == OUT:
+                body_str += '<'
+            elif self.wing == UP:
+                body_str += '^'
+            elif self.wing == DOWN:
+                body_str += 'v'
+            
+            # Get the interior body space
+            if self.body == CHUBBY:
+                body_str += ' '
+            elif self.body == VERY_CHUBBY:
+                body_str += '  '
+        
+        body_str += ')'  # Get the right side of the body
+        
+        if self.body == CHUBBY:
+            # Get an extra space so chubby ducklings are the same
+            # width as very chubby ducklings
+            body_str += ' '
+        
+        return body_str
+    
+    def get_feet_str(self):
+        """Returns the string of the duckling's feet."""
+        CHUBBY = 'chubby'
+        VERY_CHUBBY = 'very chubby'
+        
+        if self.body == CHUBBY:
+            return ' ^^  '
+        elif self.body == VERY_CHUBBY:
+            return ' ^ ^ '
+    
+    def get_next_body_part(self):
+        """Calls the appropriate display method for the next body
+        part that needs to be displayed. Sets part_to_display_next to
+        None when finished."""
+        HEAD = 'head'
+        BODY = 'body'
+        FEET = 'feet'
+        
+        if self.part_to_display_next == HEAD:
+            self.part_to_display_next = BODY
+            return self.get_head_str()
+        elif self.part_to_display_next == BODY:
+            self.part_to_display_next = FEET
+            return self.get_body_str()
+        elif self.part_to_display_next == FEET:
+            self.part_to_display_next = None
+            return self.get_feet_str()
+
+
+def ducklings(pause=0.2, density=0.10, width=None, max_rows=None):
+    """
+    Screensaver of many adorable ducklings
+    """
+    DUCKLING_WIDTH = 5
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+    
+    duckling_lanes = [None] * (_width // DUCKLING_WIDTH)
+    row_count = 0
+    
+    while True:  # Main program loop
+        for lane_num, duckling_obj in enumerate(duckling_lanes):
+            # See if we should create a duckling in this lane
+            if (duckling_obj is None and random.random() <= density):
+                # Place a duckling in this lane
+                duckling_obj = Duckling()
+                duckling_lanes[lane_num] = duckling_obj
+            
+            if duckling_obj is not None:
+                # Draw a duckling if there is one in this lane
+                print(duckling_obj.get_next_body_part(), end='')
+                # Delete the duckling if we've finished drawing it
+                if duckling_obj.part_to_display_next is None:
+                    duckling_lanes[lane_num] = None
+            else:
+                # Draw five spaces since there is no duckling here
+                print(' ' * DUCKLING_WIDTH, end='')
+        
+        print()  # Print a newline
+        sys.stdout.flush()  # Make sure text appears on the screen
+        time.sleep(pause)
+        
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+
+
+def full_of_squares(delay=0.1, width=None, min_square_size=1, max_square_size=7,
+                   chance_of_filled=0.0, squares_per_row=3, max_rows=None):
+    """
+    Falling squares using Unicode box-drawing characters
+    """
+    
+    # Unicode box-drawing characters
+    UP_DOWN_CHAR = chr(9474)         # '│'
+    LEFT_RIGHT_CHAR = chr(9472)      # '─'
+    DOWN_RIGHT_CHAR = chr(9484)      # '┌'
+    DOWN_LEFT_CHAR = chr(9488)       # '┐'
+    UP_RIGHT_CHAR = chr(9492)        # '└'
+    UP_LEFT_CHAR = chr(9496)         # '┘'
+    UP_DOWN_RIGHT_CHAR = chr(9500)   # '├'
+    UP_DOWN_LEFT_CHAR = chr(9508)    # '┤'
+    DOWN_LEFT_RIGHT_CHAR = chr(9516) # '┬'
+    UP_LEFT_RIGHT_CHAR = chr(9524)   # '┴'
+    CROSS_CHAR = chr(9532)           # '┼'
+    
+    # Characters for background and interior
+    empty_chars = ' ' * 25 + '...,' + chr(9633)
+    square_interior = ' '
+    
+    def get_outline_square(size):
+        """Create an outlined square using box-drawing characters"""
+        assert size >= 0
+        
+        rows = []
+        # Make the top row of the square
+        rows.append(DOWN_RIGHT_CHAR + (LEFT_RIGHT_CHAR * (size * 2)) + DOWN_LEFT_CHAR)
+        
+        # Make the middle segment of the square
+        for i in range(size):
+            rows.append(UP_DOWN_CHAR + (''.join([random.choice(square_interior) for j in range((size * 2))])) + UP_DOWN_CHAR)
+        
+        # Make the bottom row of the square
+        rows.append(UP_RIGHT_CHAR + (LEFT_RIGHT_CHAR * (size * 2)) + UP_LEFT_CHAR)
+        
+        return rows
+    
+    def get_filled_square(size):
+        """Create a filled square using box-drawing characters"""
+        assert size >= 0
+        
+        rows = []
+        # Make the top row of the square
+        rows.append(DOWN_RIGHT_CHAR + (DOWN_LEFT_RIGHT_CHAR * (size * 2)) + DOWN_LEFT_CHAR)
+        
+        # Make the middle segment of the square
+        for i in range(size):
+            rows.append(UP_DOWN_RIGHT_CHAR + (CROSS_CHAR * (size * 2)) + UP_DOWN_LEFT_CHAR)
+        
+        # Make the bottom row of the square
+        rows.append(UP_RIGHT_CHAR + (UP_LEFT_RIGHT_CHAR * (size * 2)) + UP_LEFT_CHAR)
+        
+        return rows
+    
+    next_rows = []
+    row_count = 0
+    
+    while True:
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
+        # Generate squares for this iteration
+        for j in range(squares_per_row):
+            size = random.randint(min_square_size, max_square_size)
+            
+            if random.random() < chance_of_filled:
+                square = get_filled_square(size)
+            else:
+                square = get_outline_square(size)
+            
+            x_start = random.randint(0, max(0, _width - 1 - (size * 2 + 2)))
+            
+            # Make sure there are enough rows in next_rows
+            if len(next_rows) < size + 2:
+                for k in range(((size + 2) - len(next_rows))):
+                    next_rows.append([random.choice(empty_chars) for i in range(_width)])
+            
+            # Add the square to next_rows
+            for y, row in enumerate(square):
+                for x, char in enumerate(row):
+                    if x + x_start < _width:
+                        next_rows[y][x + x_start] = char
+        
+        # Print the row and then remove it
+        if next_rows:
+            print(''.join(next_rows[0]))
+            del next_rows[0]
+            time.sleep(delay)
+            
+            row_count += 1
+            if max_rows and row_count >= max_rows:
+                return
+
+
+def in_and_out(delay=0.04, width=None, empty_chars='. ', traveler_chars='@Oo',
+               stay_in_min=6, stay_in_max=20, max_capacity=22, capacity_inc_every=10,
+               capacity_dec_every=3, new_traveler_prob=0.3, max_rows=None):
+    """
+    Travelers moving in and out from screen edges with dynamic capacity
+    """    
+    capacity = 1
+    step = 0
+    increasing_capacity = True
+    travelers = []  # [position, destination, duration, direction, char]
+    row_count = 0
+    
+    while True:
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
+        step += 1  # next step
+        
+        # Manage capacity changes
+        if increasing_capacity and step == capacity_inc_every:
+            step = 0
+            capacity += 1
+            if capacity == max_capacity:
+                increasing_capacity = False
+        elif not increasing_capacity and step >= capacity_dec_every and len(travelers) < capacity:
+            step = 0
+            capacity -= 1
+            if capacity == 0:
+                increasing_capacity = True
+        
+        # Add new travelers
+        if len(travelers) < capacity and random.random() <= new_traveler_prob:
+            if random.randint(0, 1) == 0:
+                # Add to left side
+                travelers.append([
+                    0, 
+                    random.randint(5, _width - 1 - 5), 
+                    random.randint(stay_in_min, stay_in_max), 
+                    'L', 
+                    random.choice(traveler_chars)
+                ])
+            else:
+                # Add to right side
+                travelers.append([
+                    _width - 1, 
+                    random.randint(5, _width - 1 - 5), 
+                    random.randint(stay_in_min, stay_in_max), 
+                    'R', 
+                    random.choice(traveler_chars)
+                ])
+        
+        # Print all travelers
+        line = [random.choice(empty_chars) for i in range(_width)]
+        for traveler in travelers:
+            line[traveler[0]] = traveler[4]
+        print(''.join(line))
+        
+        # Move all travelers
+        to_delete = []
+        for i, traveler in enumerate(travelers):
+            if ((traveler[0] == 0 and traveler[3] == 'L' and traveler[2] == 0) or 
+                (traveler[0] == _width - 1 and traveler[3] == 'R' and traveler[2] == 0)):
+                # traveler is just about to move out of space
+                to_delete.append(i)
+            elif traveler[0] != traveler[1] and traveler[2] != 0:
+                # Move traveler in
+                if traveler[3] == 'L':
+                    traveler[0] += 1  # move in, from left
+                elif traveler[3] == 'R':
+                    traveler[0] -= 1  # move in, from right
+            elif traveler[0] != traveler[1] and traveler[2] == 0:
+                # Move traveler out
+                if traveler[3] == 'L':
+                    traveler[0] -= 1  # move out, from left
+                elif traveler[3] == 'R':
+                    traveler[0] += 1  # move out, from right
+            else:
+                # traveler is in and staying, decrement stay duration
+                traveler[2] -= 1
+                if traveler[2] == 0:
+                    # Start to move out
+                    if traveler[3] == 'L':
+                        traveler[0] -= 1
+                    elif traveler[3] == 'R':
+                        traveler[0] += 1
+        
+        # Delete exited travelers
+        for i in reversed(to_delete):
+            del travelers[i]
+        
+        time.sleep(delay)
+        
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+
+
+def matrix(delay=0.1, width=None, min_stream_length=6, max_stream_length=14,
+           stream_chars=['0', '1'], density=0.02, max_rows=None):
+    """
+    Matrix-style digital rain with falling streams of characters
+    """
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+    
+    # For each column, when the counter is 0, no stream is shown.
+    # Otherwise, it acts as a counter for how many times a character
+    # should be displayed in that column.
+    columns = [0] * _width
+    row_count = 0
+    
+    while True:
+        # Set up the counter for each column
+        for i in range(_width):
+            if columns[i] == 0:
+                if random.random() <= density:
+                    # Restart a stream on this column
+                    columns[i] = random.randint(min_stream_length, max_stream_length)
+            
+            # Display an empty space or a stream character
+            if columns[i] > 0:
+                print(random.choice(stream_chars), end='')
+                columns[i] -= 1
+            else:
+                print(' ', end='')
+        
+        print()  # Print a newline at the end of the row of columns
+        time.sleep(delay)
+        
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+
+
+def sine_message(message='Hello!', delay=0.1, step_increase=0.2, width=None, max_rows=None):
+    """
+    Message that oscillates horizontally using sine wave motion
+    """
+    step = 0.0
+    row_count = 0
+    
+    while True:  # Main program loop
+        # Update width in case terminal was resized
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
+        # Calculate sine wave position
+        multiplier = (_width - len(message)) / 2
+        sin_of_step = math.sin(step)
+        padding = ' ' * int((sin_of_step + 1) * multiplier)
+        
+        print(padding + message)
+        time.sleep(delay)
+        step += step_increase
+        
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+
+
+def proton_stream(delay=0.01, width=None, num_streams=5, move_chance=0.75,
+                 empty_char=' ', stream_chars='oO@', max_rows=None):
+    """
+    Multiple streams that move while maintaining distance constraints
+    """
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
+    max_distance = num_streams * 4  # How many spaces streams must be within each other
+    
+    # Initialize streams at center of screen
+    streams = [_width // 2] * num_streams
+    row_count = 0
+    
+    while True:
+        # Update width in case terminal was resized
+        _width = (width or shutil.get_terminal_size()[0]) - 1
+        
+        columns = [empty_char] * _width
+        
+        # Move streams randomly while maintaining distance constraints
+        for i, stream in enumerate(streams):
+            if random.random() < move_chance:
+                # Try to move stream
+                if random.random() < 0.5:
+                    # Try to move left
+                    new_pos = stream - 1
+                    if (new_pos >= 0 and 
+                        all([abs(new_pos - other) <= max_distance for other in streams])):
+                        streams[i] = new_pos
+                else:
+                    # Try to move right
+                    new_pos = stream + 1
+                    if (new_pos < _width and 
+                        all([abs(new_pos - other) <= max_distance for other in streams])):
+                        streams[i] = new_pos
+        
+        # Place stream characters in columns
+        for i, stream in enumerate(streams):
+            if 0 <= stream < _width:
+                columns[stream] = stream_chars[i % len(stream_chars)]
+        
+        print(''.join(columns))
+        time.sleep(delay)
+        
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+
+
+def striped_triangles(delay=0.1, width=None, max_rows=None):
+    """Animated triangular patterns with changing density and alternating orientations."""        
+    density = 0
+    changeAmt = 4
+    row_count = 0
+    
+    while True:
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
+    # The width of a pair of triangles is 7 characters:
+    #   /\ \ \
+        #  / /\ \
+        # / / /\
+        # 123456
+        numTrianglePairs = (_width - 2) // 6
+
+        # Increase/decrease the density of triangles, until you
+        # reach 0 or 100, then reverse the direction of density change:
+        density += changeAmt
+        if density <= 0 or density >= 100:
+            changeAmt *= -1
+
+        # Draw a row that starts with an upright triangle on the left side.
+        row1 = ['  ']
+        row2 = [' ']
+        row3 = []
+        for i in range(numTrianglePairs):
+            if random.randint(0, 99) < density:
+                if random.randint(0, 1):
+                    row1.append('\\')
+                    row2.append('\\ \\')
+                    row3.append('\\ \\ \\')
+                else:
+                    row1.append('/')
+                    row2.append('/ /')
+                    row3.append('/ / /')
+            else:
+                row1.append(' ')
+                row2.append('   ')
+                row3.append('     ')
+
+            if random.randint(0, 99) < density:
+                if random.randint(0, 1):
+                    row1.append('\\ \\ \\')
+                    row2.append('\\ \\')
+                    row3.append('\\')
+                else:
+                    row1.append('/ / /')
+                    row2.append('/ /')
+                    row3.append('/')
+            else:
+                row1.append('     ')
+                row2.append('   ')
+                row3.append(' ')
+                
+        print(''.join(row1))
+        sys.stdout.flush()
+        time.sleep(delay)
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+            
+        print(''.join(row2))
+        sys.stdout.flush()
+        time.sleep(delay)
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+            
+        print(''.join(row3))
+        sys.stdout.flush()
+        time.sleep(delay)
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+
+
+        # Draw a row that starts with an upside down triangle on the left side.
+        row1 = []
+        row2 = [' ']
+        row3 = ['  ']
+        for i in range(numTrianglePairs):
+            if random.randint(0, 99) < density:
+                if random.randint(0, 1):
+                    row1.append('\\ \\ \\')
+                    row2.append('\\ \\')
+                    row3.append('\\')
+                else:
+                    row1.append('/ / /')
+                    row2.append('/ /')
+                    row3.append('/')
+            else:
+                row1.append('     ')
+                row2.append('   ')
+                row3.append(' ')
+
+            if random.randint(0, 99) < density:
+                if random.randint(0, 1):
+                    row1.append('\\')
+                    row2.append('\\ \\')
+                    row3.append('\\ \\ \\')
+                else:
+                    row1.append('/')
+                    row2.append('/ /')
+                    row3.append('/ / /')
+            else:
+                row1.append(' ')
+                row2.append('   ')
+                row3.append('     ')
+
+        print(''.join(row1))
+        sys.stdout.flush()
+        time.sleep(delay)
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+            
+        print(''.join(row2))
+        sys.stdout.flush()
+        time.sleep(delay)
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+            
+        print(''.join(row3))
+        sys.stdout.flush()
+        time.sleep(delay)
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+
+
+
+def math_func(delay=0.05, width=None, max_rows=None):
+    """Mathematical visualization using Unicode block characters."""
+    # Constants for the block characters used to represent pixels:
+    TOP_BLOCK    = chr(9600)  # ▀
+    BOTTOM_BLOCK = chr(9604)  # ▄
+    FULL_BLOCK   = chr(9608)  # █
+    
+    FUNC = eval('lambda x, y: (x ^ y) % 5')
+    
+    
+    y = 0
+    row_count = 0
+    
+    while True:
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
+        for x in range(_width):
+            topBit = FUNC(x, y)
+            bottomBit = FUNC(x, y + 1)
+
+            # Patterns often look better if we use True for the black pixels:
+            topBit = not topBit
+            bottomBit = not bottomBit
+
+            if topBit and bottomBit:
+                print(FULL_BLOCK, end='')
+            elif topBit and not bottomBit:
+                print(TOP_BLOCK, end='')
+            elif not topBit and bottomBit:
+                print(BOTTOM_BLOCK, end='')
+            else:
+                print(' ', end='')
+        print(flush=True)
+
+        y += 2
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+            
+        time.sleep(delay)
+                
+
+
+def cube_wall(delay=0.1, width=None, max_rows=None, density=35):
+    """Creates a wall of 3D cubes with random shading patterns."""
+    
+    row_count = 0
+    
+    while True:
+        if width is None:
+            _width = shutil.get_terminal_size()[0]
+        else:
+            _width = width
+        if sys.platform == 'win32':
+            _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+
+        segmentWidth = _width // 21
+
+        row1 = []
+        row2 = []
+        row3 = []
+        row4 = []
+        row5 = []
+        row6 = []
+
+        for i in range(segmentWidth):
+            if random.randint(0, 99) < density:
+                top1Shading = '/////'
+                top1ShadingBottom = '_/_/_'
+            else:
+                top1Shading = '     '
+                top1ShadingBottom = '_____'
+                
+            if random.randint(0, 99) < density:
+                top2Shading = '/////'
+                top2ShadingBottom = '_/_/_'
+            else:
+                top2Shading = '     '
+                top2ShadingBottom = '_____'
+                
+            if random.randint(0, 99) < density:
+                bottom1Shading = '\\\\\\\\\\'
+                bottom1ShadingBottom = '_\\_\\_'
+            else:
+                bottom1Shading = '     '
+                bottom1ShadingBottom = '_____'
+                
+            if random.randint(0, 99) < density:
+                bottom2Shading = '\\\\\\\\\\'
+                bottom2ShadingBottom = '_\\_\\_'
+            else:
+                bottom2Shading = '     '
+                bottom2ShadingBottom = '_____'
+
+            if random.randint(0, 99) < density:
+                if random.randint(0, 1):
+                    side1Shading = '\\\\'
+                else:
+                    side1Shading = '//'
+            else:
+                side1Shading = '  '
+
+            row1.append(f'  /{top1Shading}/\\{bottom2Shading}\\  ')
+            row2.append(f' /{top1Shading}/{side1Shading}\\{bottom2Shading}\\ ')
+            row3.append(f'/{top1ShadingBottom}/{side1Shading * 2}\\{bottom2ShadingBottom}\\')
+            row4.append(f'\\{bottom1Shading}\\{side1Shading * 2}/{top2Shading}/')
+            row5.append(f' \\{bottom1Shading}\\{side1Shading}/{top2Shading}/ ')
+            row6.append(f'  \\{bottom1ShadingBottom}\\/{top2ShadingBottom}/  ')
+
+        print(''.join(row1))
+        sys.stdout.flush()
+        time.sleep(delay)
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+            
+        print(''.join(row2))
+        sys.stdout.flush()
+        time.sleep(delay)
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+            
+        print(''.join(row3))
+        sys.stdout.flush()
+        time.sleep(delay)
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+            
+        print(''.join(row4))
+        sys.stdout.flush()
+        time.sleep(delay)
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+            
+        print(''.join(row5))
+        sys.stdout.flush()
+        time.sleep(delay)
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+            
+        print(''.join(row6))
+        sys.stdout.flush()
+        time.sleep(delay)
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+
+
+
+def bundfc(delay=0.08, width=None, max_rows=None, change_div=40, mutation_rate=0.0):
+    """Scroll art inspired by the architecture of the Bund Financial Center in Shanghai."""
+    
+    CHARS = '.:+oO@#@Oo+:.'
+    BACKGROUND = ' '
+    
+    def get_random_wave(z=0):
+        wave = {}
+        
+        wave['side'] = 'left'  # random.choice(['left', 'left'])
+        if z >= len(CHARS):
+            wave['side'] = 'right'
+            z -= len(CHARS)
+        
+        wave['speed'] = min(random.random() + 0.3, 1.0) * 10
+        wave['amplitude'] = random.randint(_width // 6, _width // 3) / ((z / 2) + 1)
+        wave['char'] = CHARS[z]  # random.choice(CHARS)
+        
+        return wave
+
+    if width is None:
+        _width = shutil.get_terminal_size()[0]
+    else:
+        _width = width
+    if sys.platform == 'win32':
+        _width -= 1  # Windows terminals insert a newline if something is printed in the last column
+    
+    waves = [get_random_wave(x) for x in range(len(CHARS) * 2)]
+    step = 42  # Don't start at 0, just to avoid all the waves starting at 0 as well.
+    row_count = 0
+    
+    while True:
+        row = [BACKGROUND for x in range(_width)]
+        
+        for wave in waves:
+            if random.random() < mutation_rate:
+                wave['amplitude'] += random.randint(-1, 1)
+            
+            wave_length = int((math.sin((step / change_div) * wave['speed']) + 1) * wave['amplitude'])
+            if wave['side'] == 'left':
+                for i in range(0, min(wave_length, _width)):
+                    row[i] = wave['char']
+            elif wave['side'] == 'right':
+                for i in range(max(0, _width - 1 - wave_length), _width):
+                    if i < _width:
+                        row[i] = wave['char']
+        
+        print(''.join(row))
+        row_count += 1
+        if max_rows and row_count >= max_rows:
+            return
+            
+        time.sleep(delay)
+        step += 1
+        

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "scrollart"
-version = "0.1.0"
+version = "0.2.1"
 description = "Scroll art is moving ASCII art produced by stdout text printed from a loop, \"animated\" as the text scrolls up the terminal."
 readme = "README.md"
 requires-python = ">=3.2"
